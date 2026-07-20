@@ -165,4 +165,9 @@ Possible future improvements:
 
 # Author
 
+**Henrik Oldehed**  
+Data Engineer | Analytics Specialist  
+
+[GitHub](https://github.com/nat15hol) | [LinkedIn](https://www.linkedin.com/in/henrikoldehed/)
+
 Portfolio project demonstrating modern Data Engineering practices.
