@@ -1,7 +1,10 @@
-from config import TRAFIKLAB_API_KEY
+from api_client import fetch_vehicle_positions
+
 
 def main():
-    print("Configuration loaded successfully")
+    feed = fetch_vehicle_positions()
+
+    print(f"Number of vehicle entities: {len(feed.entity)}")
 
 
 if __name__ == "__main__":
