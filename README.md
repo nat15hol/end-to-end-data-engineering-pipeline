@@ -127,9 +127,9 @@ Current project status:
 | --------------------- | ----------- |
 | Repository setup      | Completed   |
 | Project documentation | In progress |
-| System architecture   | Planned     |
-| Data ingestion        | Planned     |
-| Database setup        | Planned     |
+| System architecture   | Completed   |
+| Data ingestion        | In Progress |
+| Database setup        | In Progress |
 | dbt transformations   | Planned     |
 | Data quality tests    | Planned     |
 | CI/CD pipeline        | Planned     |
