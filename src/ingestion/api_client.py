@@ -1,7 +1,7 @@
 import requests
 from google.transit import gtfs_realtime_pb2
 
-from config import TRAFIKLAB_API_KEY
+from src.ingestion.config import TRAFIKLAB_API_KEY
 
 
 BASE_URL = "https://opendata.samtrafiken.se/gtfs-rt/{operator}/VehiclePositions.pb"
