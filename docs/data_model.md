@@ -2,17 +2,17 @@
 
 ## 1. Overview
 
-This document describes the planned data model for the **End-to-End Data Engineering Pipeline** project.
+This document describes the data model for the End-to-End Data Engineering Pipeline project.
 
-The purpose of the data model is to transform raw source data into a structured analytical model that supports reporting, analysis, and business insights.
+The purpose of the data model is to transform GTFS Realtime vehicle position data into a structured analytical model that supports reporting, analysis, and visualization.
 
-The project follows a dimensional modeling approach using a **star schema**.
-
-The model separates:
+The project follows a layered data architecture using:
 
 * Raw source data
 * Cleaned and transformed data
 * Analytical fact and dimension tables
+
+The data source used in this project is GTFS Realtime Vehicle Positions from Trafiklab.
 
 ---
 
@@ -20,7 +20,7 @@ The model separates:
 
 The project uses a layered data architecture:
 
-```text
+```
 Raw Layer
     |
     v
@@ -34,15 +34,21 @@ Analytics Layer
 
 Purpose:
 
-* Store extracted data from external sources
-* Preserve original source structure
-* Enable traceability
+* Store extracted data from the GTFS Realtime API
+* Preserve the original ingested data
+* Enable traceability and reprocessing
 
 Characteristics:
 
 * Minimal transformation
 * Historical data preservation
-* Used as input for transformation processes
+* Source of truth for downstream transformations
+
+Current raw table:
+
+```
+raw_vehicle_positions
+```
 
 ---
 
@@ -50,15 +56,23 @@ Characteristics:
 
 Purpose:
 
-* Clean and standardize raw data
-* Prepare data for analytical modeling
+* Clean and standardize raw vehicle position data
+* Prepare data for analytical models
+* Apply controlled transformations using dbt
 
-Transformations may include:
+Expected transformations:
 
-* Renaming columns
-* Data type conversions
-* Removing duplicates
-* Handling missing values
+* Rename columns
+* Convert timestamps
+* Standardize data types
+* Handle missing values
+* Validate data quality
+
+Current staging model:
+
+```
+stg_vehicle_positions
+```
 
 ---
 
@@ -66,144 +80,165 @@ Transformations may include:
 
 Purpose:
 
-* Provide structured data for reporting and analysis
+* Provide structured data for analysis and visualization
+* Support dashboards and analytical queries
 
-The analytics layer follows a star schema design.
+The analytics layer follows a dimensional modeling approach.
 
----
+Main analytical models:
 
-# 3. Star Schema Overview
-
-The analytical model consists of:
-
-* Fact tables containing measurable events
-* Dimension tables providing descriptive context
-
-General structure:
-
-```text
-              Dimension
-                  |
-                  |
-Dimension ---- Fact Table ---- Dimension
-                  |
-                  |
-              Dimension
+```
+fact_vehicle_positions
+dim_vehicle
 ```
 
 ---
 
-# 4. Fact Tables
+# 3. Raw Model
 
-Fact tables represent measurable business events.
+## raw_vehicle_positions
 
-A fact table should contain:
+Purpose:
 
-* Foreign keys to dimensions
-* Numeric measurements
-* Event timestamps
-* Business metrics
+Stores vehicle position records extracted from the GTFS Realtime API.
+
+Each row represents one vehicle position event received during ingestion.
+
+Current structure:
+
+| Column         | Description                    |
+| -------------- | ------------------------------ |
+| id             | Unique database identifier     |
+| vehicle_id     | Identifier for the vehicle     |
+| trip_id        | Current trip identifier        |
+| latitude       | Vehicle latitude position      |
+| longitude      | Vehicle longitude position     |
+| bearing        | Direction of travel            |
+| speed          | Current speed                  |
+| timestamp      | Source event timestamp         |
+| current_status | Current vehicle status         |
+| ingested_at    | Timestamp when data was stored |
+
+---
+
+# 4. Staging Model
+
+## stg_vehicle_positions
+
+Purpose:
+
+Creates a cleaned and standardized version of vehicle position data.
+
+The staging model acts as the bridge between raw ingestion data and analytical models.
+
+Expected improvements:
+
+* Convert timestamps into readable datetime formats
+* Standardize column names
+* Validate required fields
+* Prepare data for analytical usage
 
 Example structure:
 
-## fact_events
-
-| Column       | Description                     |
-| ------------ | ------------------------------- |
-| event_id     | Unique identifier               |
-| date_key     | Reference to date dimension     |
-| location_key | Reference to location dimension |
-| metric_value | Measured value                  |
-| created_at   | Record creation timestamp       |
-
-The exact fact table structure will be finalized after the data source has been selected.
+| Column         | Description              |
+| -------------- | ------------------------ |
+| vehicle_id     | Vehicle identifier       |
+| trip_id        | Trip identifier          |
+| latitude       | Clean latitude value     |
+| longitude      | Clean longitude value    |
+| speed          | Standardized speed value |
+| recorded_at    | Converted timestamp      |
+| current_status | Vehicle status           |
 
 ---
 
-# 5. Dimension Tables
+# 5. Fact Tables
 
-Dimension tables provide descriptive information used for filtering and analysis.
-
-## dim_date
+## fact_vehicle_positions
 
 Purpose:
 
-Provides time-based analysis.
+Stores measurable vehicle movement events.
 
-Example attributes:
+Grain:
 
-| Column   | Description            |
-| -------- | ---------------------- |
-| date_key | Unique date identifier |
-| date     | Calendar date          |
-| year     | Year                   |
-| month    | Month                  |
-| day      | Day                    |
+One row represents one recorded vehicle position at a specific point in time.
+
+Example structure:
+
+| Column      | Description                    |
+| ----------- | ------------------------------ |
+| vehicle_id  | Reference to vehicle dimension |
+| recorded_at | Position timestamp             |
+| latitude    | Vehicle latitude               |
+| longitude   | Vehicle longitude              |
+| speed       | Vehicle speed                  |
+| bearing     | Direction                      |
+
+Possible analytical use cases:
+
+* Vehicle movement analysis
+* Speed analysis
+* Position history
+* Traffic pattern analysis
 
 ---
 
-## dim_location
+# 6. Dimension Tables
+
+## dim_vehicle
 
 Purpose:
 
-Provides geographic context if applicable.
+Stores descriptive information about vehicles.
 
-Example attributes:
+Grain:
 
-| Column        | Description        |
-| ------------- | ------------------ |
-| location_key  | Unique identifier  |
-| location_name | Location name      |
-| region        | Region information |
-| country       | Country            |
+One row per vehicle.
 
----
+Example structure:
 
-## dim_source
+| Column     | Description               |
+| ---------- | ------------------------- |
+| vehicle_id | Unique vehicle identifier |
+| first_seen | First observed timestamp  |
+| last_seen  | Latest observed timestamp |
 
-Purpose:
+Possible future attributes:
 
-Tracks information about the original data source.
-
-Example attributes:
-
-| Column         | Description        |
-| -------------- | ------------------ |
-| source_key     | Unique identifier  |
-| source_name    | Source system      |
-| source_type    | API, dataset, file |
-| ingestion_date | Extraction date    |
+* Vehicle type
+* Operator
+* Route information
 
 ---
 
-# 6. Data Relationships
+# 7. Data Relationships
 
-The expected relationships:
+Expected relationships:
 
-```text
-dim_date
-    |
-    |
-    v
-fact_events
-    ^
-    |
-    |
-dim_location
-
-
-dim_source
-    |
-    |
-    v
-fact_events
+```
+        dim_vehicle
+             |
+             |
+             v
+fact_vehicle_positions
 ```
 
-Relationships will be refined after the final dataset has been selected.
+A vehicle can have many recorded position events.
+
+Future dimensions may include:
+
+```
+dim_route
+dim_time
+dim_location
+```
+
+depending on future analytical requirements.
 
 ---
 
-# 7. Data Quality Requirements
+# 8. Data Quality Requirements
 
 The analytical model should include validation through dbt tests.
 
@@ -216,15 +251,16 @@ Expected tests:
 
 ## Relationships
 
-* Foreign keys exist
-* Valid dimension references
+* Vehicle references exist
+* Foreign keys are valid
 
 ## Data Completeness
 
 * Required fields populated
+* Valid geographic coordinates
 * Expected data types maintained
 
-Example:
+Example dbt tests:
 
 ```yaml
 tests:
@@ -235,29 +271,28 @@ tests:
 
 ---
 
-# 8. dbt Model Structure
+# 9. dbt Model Structure
 
-The planned dbt structure:
+Planned dbt structure:
 
-```text
+```
 dbt/
 
 ├── models/
 │
 ├── staging/
-│   └── stg_source_data.sql
+│   └── stg_vehicle_positions.sql
 │
 ├── marts/
-│   ├── fact_events.sql
-│   ├── dim_date.sql
-│   └── dim_location.sql
+│   ├── fact_vehicle_positions.sql
+│   └── dim_vehicle.sql
 │
 └── schema.yml
 ```
 
 ---
 
-# 9. Design Principles
+# 10. Design Principles
 
 The data model follows these principles:
 
@@ -267,7 +302,7 @@ The model should be understandable and easy to maintain.
 
 ## Analytics Focus
 
-Tables should support analytical questions rather than simply mirror source data.
+Models should support analytical questions rather than simply mirror source data.
 
 ## Data Quality
 
@@ -275,24 +310,24 @@ Data should be validated before reaching the analytics layer.
 
 ## Scalability
 
-The model should allow additional dimensions and metrics in the future.
+The model should allow additional dimensions and analytical use cases in the future.
 
 ---
 
-# 10. Future Improvements
+# 11. Future Improvements
 
 Possible improvements:
 
+* Additional dimensions such as route and stop information
 * Slowly Changing Dimensions (SCD)
-* Additional fact tables
-* Data warehouse optimization
-* Metadata management
-* Advanced data quality monitoring
+* Additional analytical fact tables
+* Advanced dbt testing
+* Data quality monitoring
 
 ---
 
 # Related Documentation
 
-* [Project Plan](project_plan.md)
-* [Delivery Process](delivery_process.md)
-* [System Architecture](system_architecture.md)
+* Project Plan
+* Delivery Process
+* System Architecture
