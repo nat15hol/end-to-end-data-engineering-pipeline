@@ -8,23 +8,34 @@
 
 ### Purpose
 
-The purpose of this project is to design and implement a complete data engineering pipeline following modern industry practices. The project focuses not only on building a functional data solution, but also on demonstrating a professional development process with documentation, version control, automated quality checks, and reproducible workflows.
+The purpose of this project is to design and implement an end-to-end data engineering pipeline following modern industry practices.
 
-The project is structured as a portfolio project that demonstrates capabilities within data engineering, including data ingestion, data modeling, transformation, testing, automation, and analytics delivery.
+The project focuses not only on building a functional data solution, but also on demonstrating a professional development process with documentation, version control, automated quality checks, and reproducible workflows.
+
+The project is structured as a portfolio project demonstrating capabilities within data engineering, including:
+
+* Data ingestion
+* Data storage
+* Workflow orchestration
+* Data transformation
+* Data modeling
+* Data quality validation
+* Analytics preparation
+* Technical documentation
 
 ---
 
 ## 2. Vision
 
-The vision of this project is to create a production-inspired data platform that demonstrates how raw data can be transformed into reliable analytical insights through a structured and automated data engineering workflow.
+The vision of this project is to create a production-inspired data platform that demonstrates how raw data can be transformed into reliable analytical data through a structured and automated data engineering workflow.
 
-The project should demonstrate:
+The project demonstrates:
 
 * Professional Git workflow
 * Agile project management
 * Clear system architecture
 * Data quality practices
-* Automated testing and CI/CD
+* Automated data validation
 * Reproducible development environments
 * Well-documented technical decisions
 
@@ -36,17 +47,32 @@ The project should demonstrate:
 
 The project aims to build an end-to-end data pipeline containing:
 
-* Data ingestion from an external API or data source
+* Data ingestion from an external API source
 * Data storage using PostgreSQL
+* Workflow orchestration using Apache Airflow
 * Data transformation using dbt
-* Analytical data modeling using a star schema
+* Analytical data modeling using fact and dimension models
 * Data quality validation
-* Automated testing through CI/CD
-* Data visualization through a dashboard
+* Preparation for dashboard and analytics consumption
+
+### Implemented Capabilities
+
+The current implementation includes:
+
+* GTFS Realtime vehicle data ingestion
+* PostgreSQL raw data storage
+* Airflow pipeline orchestration
+* dbt staging and analytical models
+* Analytical data models:
+
+  * fact_vehicle_positions
+  * fact_vehicle_activity
+  * dim_vehicle
+* dbt data quality tests
 
 ### Process Goals
 
-The project should demonstrate:
+The project demonstrates:
 
 * GitHub Projects Kanban workflow
 * Issue-driven development
@@ -58,37 +84,39 @@ The project should demonstrate:
 
 ---
 
-## 4. Project Scope
+# 4. Project Scope
 
 ## In Scope
 
-The MVP includes:
+The implemented MVP includes:
 
 * Repository setup and documentation structure
 * GitHub Project Kanban board
 * System architecture documentation
 * Data model design
-* API ingestion pipeline
-* PostgreSQL database
+* GTFS Realtime API ingestion pipeline
+* PostgreSQL database environment
+* Airflow workflow orchestration
 * dbt transformation layer
+* Analytical data models
 * Data quality tests
-* CI pipeline using GitHub Actions
-* Dashboard or visualization layer
 * Complete project documentation
 
 ---
 
 ## Out of Scope
 
-The following areas are considered optional improvements:
+The following areas are considered future improvements:
 
 * Full cloud deployment
 * Advanced monitoring and observability
 * Large-scale production infrastructure
 * Complex machine learning solutions
 * Advanced AI functionality
+* Dashboard implementation
+* Full CI/CD automation
 
-These may be considered after the MVP is completed.
+These may be considered after the MVP has been completed.
 
 ---
 
@@ -98,38 +126,49 @@ The Minimum Viable Product is considered complete when:
 
 * Data can be extracted from an external source
 * Data is stored reliably in PostgreSQL
-* Transformations create an analytical data model
+* Airflow orchestrates the pipeline workflow
+* dbt transformations create analytical data models
 * Data quality checks are implemented
-* Automated validation runs through CI/CD
-* A dashboard presents meaningful insights
 * Documentation explains architecture and development process
+
+The current MVP implementation fulfills these requirements.
 
 ---
 
 # 6. Technical Overview
 
-The planned architecture follows this general data flow:
+The implemented architecture follows this data flow:
 
-```
-External API
-      |
-      v
+```text
+External API (GTFS Realtime)
+          |
+          v
 Data Ingestion (Python)
-      |
-      v
-PostgreSQL (Raw/Staging Layer)
-      |
-      v
+          |
+          v
+PostgreSQL Raw Layer
+          |
+          v
+Apache Airflow Orchestration
+          |
+          v
 dbt Transformations
-      |
-      v
-Star Schema (Analytics Layer)
-      |
-      v
-BI Dashboard
+(Staging + Analytics Models)
+          |
+          v
+Analytical Data Models
+          |
+          v
+Future BI Dashboard
 ```
 
-The architecture is designed to separate ingestion, transformation, and analytical consumption layers.
+The architecture separates:
+
+* Data collection
+* Data storage
+* Workflow management
+* Data transformation
+* Analytical consumption
 
 ---
 
@@ -139,9 +178,9 @@ The project follows an agile development approach using GitHub Projects as a Kan
 
 ## Workflow
 
-Tasks are managed through GitHub Issues and progress through the following stages:
+Tasks are managed through GitHub Issues and progress through:
 
-```
+```text
 Backlog → Ready → In Progress → In Review → Done
 ```
 
@@ -151,8 +190,8 @@ The project uses:
 
 * Feature branches for development
 * Pull Requests before merging
-* Main branch protection
 * Clear commit messages
+* Documentation updates as part of development
 
 ## Definition of Done
 
@@ -161,7 +200,7 @@ A task is considered complete when:
 * The implementation works as expected
 * Code quality requirements are fulfilled
 * Documentation is updated when required
-* Tests pass
+* Relevant tests pass
 * Changes have been reviewed
 * The related issue can be closed
 
@@ -169,13 +208,13 @@ A task is considered complete when:
 
 # 8. Timeline and Milestones
 
-The project is planned as a 14-day development cycle.
+The project was planned as a 14-day development cycle.
 
-The first 10 days focus on implementing the core solution. The final 4 days act as a buffer for testing, improvements, documentation, and unexpected issues.
+The first phases focused on implementing the core pipeline. Remaining time is used for improvements, documentation, testing, and optional extensions.
 
 ---
 
-## Phase 1: Foundation and Planning (Days 1-2)
+## Phase 1: Foundation and Planning
 
 ### Goals
 
@@ -193,62 +232,79 @@ The first 10 days focus on implementing the core solution. The final 4 days act 
 * System architecture design
 * Data model design
 
+Status:
+
+Completed
+
 ---
 
-## Phase 2: Data Pipeline Development (Days 3-6)
+## Phase 2: Data Pipeline Development
 
 ### Goals
 
-* Build the first working data pipeline
+* Build a working data pipeline
 * Connect external data source to database
+* Create automated workflow execution
 
 ### Deliverables
 
-* API ingestion script
+* GTFS Realtime ingestion script
 * PostgreSQL environment
 * Raw data storage
+* Airflow DAG orchestration
 * dbt project setup
-* Initial transformation models
+* Transformation models
+
+Status:
+
+Completed
 
 ---
 
-## Phase 3: Data Quality and Automation (Days 7-9)
+## Phase 3: Data Quality and Transformation
 
 ### Goals
 
-* Improve reliability and automate validation
+* Improve reliability and analytical usability
 
 ### Deliverables
 
+* dbt staging models
+* Analytical fact and dimension models
 * dbt tests
-* Data quality checks
-* GitHub Actions workflow
-* Automated validation pipeline
+* Data validation
+
+Status:
+
+Completed
 
 ---
 
-## Phase 4: Visualization and Finalization (Days 10-14)
+## Phase 4: Finalization and Improvements
 
 ### Goals
 
-* Deliver analytical value
-* Improve documentation and project quality
+* Improve project quality
+* Prepare portfolio presentation
 
 ### Deliverables
 
-* Dashboard
 * Updated README
 * Architecture Decision Records
-* CHANGELOG
-* CONTRIBUTING guidelines
-* Final Definition of Done review
-* Remaining issue resolution
+* Additional documentation
+* Optional dashboard
+* CI/CD implementation
+* Final review
+
+Status:
+
+In progress
 
 ---
 
 # 9. Project Deliverables
 
-The final repository should contain:
+The repository contains:
 
 ## Documentation
 
@@ -260,27 +316,33 @@ The final repository should contain:
 * ADR documentation
 * Test Strategy
 * CI/CD documentation
-* Risk Analysis
 
 ## Technical Implementation
 
-* Data ingestion pipeline
+* Python data ingestion pipeline
 * PostgreSQL database
+* Airflow DAG orchestration
 * dbt models
 * Data quality tests
-* CI/CD workflow
-* Dashboard
+
+## Future Improvements
+
+* GitHub Actions CI/CD workflow
+* Dashboard implementation
+* Cloud deployment
+* Advanced monitoring
 
 ---
 
 # 10. Risks and Mitigation
 
-| Risk                    | Impact                         | Mitigation                                               |
-| ----------------------- | ------------------------------ | -------------------------------------------------------- |
-| API availability issues | Pipeline development delayed   | Select reliable data source and implement error handling |
-| Limited project time    | Features may remain incomplete | Prioritize MVP functionality                             |
-| Data quality problems   | Incorrect analytics results    | Implement validation tests                               |
-| Technical complexity    | Development slowdown           | Build incrementally and document decisions               |
+| Risk                    | Impact                         | Mitigation                                            |
+| ----------------------- | ------------------------------ | ----------------------------------------------------- |
+| API availability issues | Pipeline development delayed   | Use reliable data source and implement error handling |
+| Limited project time    | Features may remain incomplete | Prioritize MVP functionality                          |
+| Data quality problems   | Incorrect analytics results    | Implement dbt validation tests                        |
+| Technical complexity    | Development slowdown           | Build incrementally and document decisions            |
+| Environment differences | Setup problems                 | Use Docker-based development environment              |
 
 ---
 
@@ -292,6 +354,7 @@ The project is successful when it demonstrates:
 * Reliable and tested data transformations
 * Professional development practices
 * Clear technical documentation
+* Reproducible development workflows
 * A repository structure suitable for portfolio presentation
 
-The final result should demonstrate both technical capability and understanding of modern data engineering workflows.
+The final result demonstrates both technical capability and understanding of modern data engineering workflows.

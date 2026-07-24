@@ -2,9 +2,20 @@
 
 ## 1. Overview
 
-This document describes how the project is developed, managed, and delivered. The purpose is to establish a professional and reproducible development workflow where planning, implementation, testing, and documentation are integrated throughout the project lifecycle.
+This document describes how the project is developed, managed, and delivered.
+
+The purpose is to establish a professional and reproducible development workflow where planning, implementation, testing, and documentation are integrated throughout the project lifecycle.
 
 The project follows an agile workflow using GitHub Projects, Issues, feature branches, Pull Requests, and continuous documentation.
+
+The development process supports the implementation of:
+
+* Data ingestion pipelines
+* Database development
+* Workflow orchestration
+* Data transformation
+* Data quality validation
+* Technical documentation
 
 ---
 
@@ -26,6 +37,15 @@ Each Issue should represent a clear piece of work with:
 * A description
 * Relevant labels
 * Clear acceptance criteria when applicable
+
+Examples of project work items:
+
+* API ingestion development
+* PostgreSQL database configuration
+* Airflow pipeline orchestration
+* dbt model development
+* Data quality validation
+* Documentation updates
 
 ---
 
@@ -57,7 +77,10 @@ Examples:
 
 ```
 feature/api-ingestion
+feature/postgres-integration
+feature/airflow-pipeline
 feature/dbt-models
+feature/data-quality-tests
 feature/add-ci-pipeline
 ```
 
@@ -73,8 +96,10 @@ Examples:
 Create initial project plan
 Add PostgreSQL docker configuration
 Implement API ingestion script
-Add dbt staging models
-Configure GitHub Actions workflow
+Add Airflow DAG orchestration
+Create dbt staging models
+Add dbt data quality tests
+Update project documentation
 ```
 
 Commits should avoid:
@@ -126,15 +151,17 @@ Each Issue should contain:
 
 Examples of labels:
 
-| Label | Purpose |
-| --- | --- |
-| `documentation` | Documentation tasks |
-| `feature` | New functionality |
-| `database` | Database-related work |
-| `ingestion` | Data collection |
-| `testing` | Quality assurance |
-| `ci/cd` | Automation |
-| `bug` | Problem fixing |
+| Label           | Purpose                |
+| --------------- | ---------------------- |
+| `documentation` | Documentation tasks    |
+| `feature`       | New functionality      |
+| `database`      | Database-related work  |
+| `ingestion`     | Data collection        |
+| `airflow`       | Workflow orchestration |
+| `dbt`           | Data transformation    |
+| `testing`       | Quality assurance      |
+| `ci/cd`         | Automation             |
+| `bug`           | Problem fixing         |
 
 ---
 
@@ -150,7 +177,9 @@ A task is considered complete when the following criteria are fulfilled.
 
 ## Data Engineering Requirements
 
-* Data transformations are documented
+* Data ingestion logic is documented
+* Database changes are documented
+* Airflow workflows are tested
 * dbt models contain appropriate documentation
 * Data quality tests are implemented where applicable
 
@@ -158,7 +187,7 @@ A task is considered complete when the following criteria are fulfilled.
 
 * Relevant tests pass
 * No known issues remain
-* CI checks pass when implemented
+* CI checks pass when CI/CD automation is implemented
 
 ## Documentation
 
@@ -180,10 +209,13 @@ Important project documents include:
 
 ```
 docs/
+
 ├── project_plan.md
 ├── delivery_process.md
 ├── system_architecture.md
 ├── data_model.md
+├── test_strategy.md
+├── ci_cd.md
 └── adr/
 ```
 
@@ -203,8 +235,9 @@ Important decisions and architecture choices should be documented before impleme
 
 Repeated manual processes should be automated through tools such as:
 
-* GitHub Actions
+* Apache Airflow
 * dbt tests
+* GitHub Actions
 * Automated validation
 
 ## Reproducibility
@@ -226,5 +259,6 @@ The project aims to demonstrate:
 * Clear architecture decisions
 * Automated quality assurance
 * Maintainable documentation
+* Reproducible development workflows
 
 The delivery process should make the project understandable, reproducible, and suitable as a professional Data Engineering portfolio project.

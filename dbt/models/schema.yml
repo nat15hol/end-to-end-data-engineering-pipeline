@@ -1,0 +1,47 @@
+version: 2
+
+models:
+
+  - name: stg_vehicle_positions
+    description: "Cleaned vehicle position data from GTFS realtime feed."
+    columns:
+      - name: vehicle_id
+        description: "Unique identifier for each vehicle."
+        tests:
+          - not_null
+
+      - name: recorded_at
+        description: "Timestamp when the vehicle position was recorded."
+        tests:
+          - not_null
+
+
+  - name: dim_vehicle
+    description: "Dimension table containing one row per vehicle."
+    columns:
+      - name: vehicle_id
+        description: "Vehicle identifier."
+        tests:
+          - not_null
+          - unique
+
+
+  - name: fact_vehicle_positions
+    description: "Fact table containing individual vehicle observations."
+    columns:
+      - name: vehicle_id
+        tests:
+          - not_null
+
+      - name: recorded_at
+        tests:
+          - not_null
+
+
+  - name: fact_vehicle_activity
+    description: "Hourly aggregation of vehicle activity."
+    columns:
+      - name: activity_hour
+        description: "Hour bucket for activity analysis."
+        tests:
+          - not_null

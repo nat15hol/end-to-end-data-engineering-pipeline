@@ -10,7 +10,7 @@ The project follows a layered data architecture using:
 
 * Raw source data
 * Cleaned and transformed data
-* Analytical fact and dimension tables
+* Analytical fact and dimension models
 
 The data source used in this project is GTFS Realtime Vehicle Positions from Trafiklab.
 
@@ -30,12 +30,16 @@ Staging Layer
 Analytics Layer
 ```
 
+The transformation process is managed using dbt.
+
+---
+
 ## Raw Layer
 
 Purpose:
 
 * Store extracted data from the GTFS Realtime API
-* Preserve the original ingested data
+* Preserve ingested source data
 * Enable traceability and reprocessing
 
 Characteristics:
@@ -60,13 +64,12 @@ Purpose:
 * Prepare data for analytical models
 * Apply controlled transformations using dbt
 
-Expected transformations:
+Implemented transformations:
 
-* Rename columns
-* Convert timestamps
-* Standardize data types
-* Handle missing values
-* Validate data quality
+* Standardize column names
+* Convert timestamps into readable datetime formats
+* Prepare fields for analytical usage
+* Apply data quality validation through dbt tests
 
 Current staging model:
 
@@ -85,10 +88,11 @@ Purpose:
 
 The analytics layer follows a dimensional modeling approach.
 
-Main analytical models:
+Implemented analytical models:
 
 ```
 fact_vehicle_positions
+fact_vehicle_activity
 dim_vehicle
 ```
 
@@ -131,14 +135,7 @@ Creates a cleaned and standardized version of vehicle position data.
 
 The staging model acts as the bridge between raw ingestion data and analytical models.
 
-Expected improvements:
-
-* Convert timestamps into readable datetime formats
-* Standardize column names
-* Validate required fields
-* Prepare data for analytical usage
-
-Example structure:
+Structure:
 
 | Column         | Description              |
 | -------------- | ------------------------ |
@@ -147,6 +144,7 @@ Example structure:
 | latitude       | Clean latitude value     |
 | longitude      | Clean longitude value    |
 | speed          | Standardized speed value |
+| bearing        | Direction of travel      |
 | recorded_at    | Converted timestamp      |
 | current_status | Vehicle status           |
 
@@ -164,16 +162,18 @@ Grain:
 
 One row represents one recorded vehicle position at a specific point in time.
 
-Example structure:
+Structure:
 
-| Column      | Description                    |
-| ----------- | ------------------------------ |
-| vehicle_id  | Reference to vehicle dimension |
-| recorded_at | Position timestamp             |
-| latitude    | Vehicle latitude               |
-| longitude   | Vehicle longitude              |
-| speed       | Vehicle speed                  |
-| bearing     | Direction                      |
+| Column         | Description                    |
+| -------------- | ------------------------------ |
+| vehicle_id     | Reference to vehicle dimension |
+| trip_id        | Trip identifier                |
+| recorded_at    | Position timestamp             |
+| latitude       | Vehicle latitude               |
+| longitude      | Vehicle longitude              |
+| speed          | Vehicle speed                  |
+| bearing        | Direction                      |
+| current_status | Vehicle status                 |
 
 Possible analytical use cases:
 
@@ -181,6 +181,35 @@ Possible analytical use cases:
 * Speed analysis
 * Position history
 * Traffic pattern analysis
+
+---
+
+## fact_vehicle_activity
+
+Purpose:
+
+Aggregates vehicle activity over time to support operational analysis.
+
+Grain:
+
+One row represents aggregated vehicle activity during one hour.
+
+Structure:
+
+| Column          | Description                     |
+| --------------- | ------------------------------- |
+| activity_hour   | Hourly activity timestamp       |
+| active_vehicles | Number of active vehicles       |
+| observations    | Number of position observations |
+| avg_speed       | Average vehicle speed           |
+| max_speed       | Maximum recorded speed          |
+
+Possible analytical use cases:
+
+* Traffic activity analysis
+* Hourly vehicle utilization
+* Speed pattern analysis
+* Operational monitoring
 
 ---
 
@@ -196,7 +225,7 @@ Grain:
 
 One row per vehicle.
 
-Example structure:
+Structure:
 
 | Column     | Description               |
 | ---------- | ------------------------- |
@@ -214,14 +243,20 @@ Possible future attributes:
 
 # 7. Data Relationships
 
-Expected relationships:
+Current analytical relationships:
 
 ```
-        dim_vehicle
-             |
-             |
-             v
-fact_vehicle_positions
+             dim_vehicle
+                  |
+                  |
+                  v
+       fact_vehicle_positions
+
+
+       fact_vehicle_activity
+                  |
+                  v
+       Hourly aggregated vehicle metrics
 ```
 
 A vehicle can have many recorded position events.
@@ -240,9 +275,9 @@ depending on future analytical requirements.
 
 # 8. Data Quality Requirements
 
-The analytical model should include validation through dbt tests.
+Data quality is validated through dbt tests.
 
-Expected tests:
+Implemented tests include:
 
 ## Primary Keys
 
@@ -273,7 +308,7 @@ tests:
 
 # 9. dbt Model Structure
 
-Planned dbt structure:
+Implemented dbt structure:
 
 ```
 dbt/
@@ -285,6 +320,7 @@ dbt/
 │
 ├── marts/
 │   ├── fact_vehicle_positions.sql
+│   ├── fact_vehicle_activity.sql
 │   └── dim_vehicle.sql
 │
 └── schema.yml
@@ -306,11 +342,11 @@ Models should support analytical questions rather than simply mirror source data
 
 ## Data Quality
 
-Data should be validated before reaching the analytics layer.
+Data is validated before reaching the analytics layer.
 
 ## Scalability
 
-The model should allow additional dimensions and analytical use cases in the future.
+The model allows additional dimensions and analytical use cases in the future.
 
 ---
 
@@ -321,8 +357,9 @@ Possible improvements:
 * Additional dimensions such as route and stop information
 * Slowly Changing Dimensions (SCD)
 * Additional analytical fact tables
-* Advanced dbt testing
+* More advanced dbt testing
 * Data quality monitoring
+* Dashboard implementation
 
 ---
 
@@ -331,3 +368,4 @@ Possible improvements:
 * Project Plan
 * Delivery Process
 * System Architecture
+* README

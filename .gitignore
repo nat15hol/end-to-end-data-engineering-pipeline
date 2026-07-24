@@ -1,9 +1,32 @@
+# Environment variables
 .env
 
+# Python
 __pycache__/
-
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
 
+# Virtual environments
 .venv/
+venv/
 
+# VS Code
 .vscode/
+
+# Airflow
+airflow/logs/
+airflow/dags/__pycache__/
+airflow/plugins/__pycache__/
+
+# dbt
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+logs/
+dbt/.user.yml
+
+# OS files
+.DS_Store
+Thumbs.db

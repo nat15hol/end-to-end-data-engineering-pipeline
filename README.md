@@ -6,7 +6,16 @@ This project demonstrates the design and implementation of an end-to-end data en
 
 The goal of the project is to build a complete data workflow where data is collected from an external source, stored, transformed, validated, and prepared for analytical use.
 
-The project focuses not only on the technical solution, but also on demonstrating a professional development process including documentation, version control, automated testing, and CI/CD practices.
+The project demonstrates a professional data engineering workflow including:
+
+* Data ingestion from external APIs
+* Workflow orchestration
+* Data storage and management
+* Data transformation using dbt
+* Data quality validation
+* Analytical data modeling
+* Containerized development environment
+* Version control and documentation practices
 
 ---
 
@@ -18,7 +27,7 @@ The main objectives of this project are to demonstrate:
 * Data storage and management
 * Data transformation using modern engineering practices
 * Data quality validation
-* Automated testing and CI/CD
+* Workflow orchestration
 * Analytical data modeling
 * Professional software development workflow
 
@@ -26,28 +35,46 @@ The main objectives of this project are to demonstrate:
 
 # Architecture Overview
 
-The planned high-level architecture:
+The implemented high-level architecture:
 
 ```text
-External Data Source
+Trafiklab GTFS-RT API
         |
         v
-Data Ingestion (Python)
+Python Data Ingestion
         |
         v
-PostgreSQL Database
+PostgreSQL Raw Layer
+(raw_vehicle_positions)
         |
         v
 dbt Transformations
         |
         v
-Analytical Data Model
+Analytical Data Models
+(dim_vehicle,
+ fact_vehicle_positions,
+ fact_vehicle_activity)
         |
         v
 Dashboard / BI Layer
 ```
 
 The architecture separates data collection, storage, transformation, and analytical consumption.
+
+The pipeline is orchestrated using Apache Airflow, which controls the execution order:
+
+```text
+Airflow DAG
+
+run_ingestion
+        |
+        v
+dbt_run
+        |
+        v
+dbt_test
+```
 
 ---
 
@@ -58,14 +85,15 @@ The project uses the following technologies:
 | Area               | Technology      |
 | ------------------ | --------------- |
 | Programming        | Python          |
+| Orchestration      | Apache Airflow  |
+| Containerization   | Docker          |
 | Database           | PostgreSQL      |
 | Transformation     | dbt             |
+| Data Validation    | dbt Tests       |
 | Version Control    | Git & GitHub    |
 | Project Management | GitHub Projects |
 | CI/CD              | GitHub Actions  |
 | Visualization      | BI Dashboard    |
-
-Additional technologies may be added during development.
 
 ---
 
@@ -74,23 +102,73 @@ Additional technologies may be added during development.
 ```text
 end-to-end-data-engineering-pipeline/
 
-├── docs/
-│   ├── project_plan.md
-│   ├── delivery_process.md
-│   ├── system_architecture.md
-│   └── data_model.md
+├── airflow/
+│   ├── dags/
+│   ├── logs/
+│   └── plugins/
+│
+├── dbt/
+│   ├── models/
+│   │   ├── staging/
+│   │   └── marts/
+│   ├── dbt_project.yml
+│   └── profiles.yml
 │
 ├── src/
+│   ├── ingestion/
+│   └── database/
 │
 ├── tests/
 │
-├── dbt/
+├── docs/
 │
-├── .github/
+├── docker/
 │
+├── docker-compose.yml
+├── requirements.txt
 ├── README.md
 └── .gitignore
 ```
+
+---
+
+# Implemented Pipeline
+
+The current pipeline executes the following workflow:
+
+1. Airflow triggers the ingestion process.
+2. Python retrieves vehicle position data from Trafiklab GTFS-RT.
+3. Vehicle position data is stored in PostgreSQL.
+4. dbt transforms raw data into analytical models.
+5. dbt tests validate the transformed data.
+
+Implemented dbt models:
+
+* `stg_vehicle_positions`
+* `fact_vehicle_positions`
+* `fact_vehicle_activity`
+* `dim_vehicle`
+
+Current PostgreSQL data layers:
+
+### Raw Layer
+
+```text
+raw_vehicle_positions
+```
+
+Contains ingested vehicle position observations.
+
+### Analytics Layer
+
+```text
+stg_vehicle_positions
+fact_vehicle_positions
+fact_vehicle_activity
+dim_vehicle
+```
+
+Provides structured data for analytical usage.
 
 ---
 
@@ -123,17 +201,18 @@ More details can be found in:
 
 Current project status:
 
-| Component             | Status      |
-| --------------------- | ----------- |
-| Repository setup      | Completed   |
-| Project documentation | In progress |
-| System architecture   | Completed   |
-| Data ingestion        | Completed   |
-| Database setup        | In Progress |
-| dbt transformations   | Planned     |
-| Data quality tests    | Planned     |
-| CI/CD pipeline        | Planned     |
-| Dashboard             | Planned     |
+| Component             | Status    |
+| --------------------- | --------- |
+| Repository setup      | Completed |
+| Project documentation | Completed |
+| System architecture   | Completed |
+| Data ingestion        | Completed |
+| Database setup        | Completed |
+| Airflow orchestration | Completed |
+| dbt transformations   | Completed |
+| Data quality tests    | Completed |
+| CI/CD pipeline        | Planned   |
+| Dashboard             | Planned   |
 
 ---
 
@@ -153,20 +232,22 @@ Project documentation:
 
 # Future Improvements
 
-Possible future improvements:
+Potential future improvements:
 
+* Dashboard implementation
 * Advanced monitoring and observability
 * Cloud deployment
 * Additional data sources
 * Enhanced data quality checks
 * Automated metadata generation
+* Production CI/CD deployment
 
 ---
 
 # Author
 
-**Henrik Oldehed**  
-Data Engineer | Analytics Specialist  
+**Henrik Oldehed**
+Data Engineer | Analytics Specialist
 
 [GitHub](https://github.com/nat15hol) | [LinkedIn](https://www.linkedin.com/in/henrikoldehed/)
 
