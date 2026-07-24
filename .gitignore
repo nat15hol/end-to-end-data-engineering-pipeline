@@ -1,32 +1,73 @@
-# Environment variables
+# ==========================================
+# 1. Environment & Secrets
+# ==========================================
 .env
+.env.*
+!.env.example
 
-# Python
+*.pem
+*.key
+
+# ==========================================
+# 2. Python & Virtual Environments
+# ==========================================
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+*.so
 *.egg-info/
 
-# Virtual environments
+.pytest_cache/
+.coverage
+htmlcov/
+
 .venv/
 venv/
+ENV/
+env/
 
-# VS Code
-.vscode/
+# ==========================================
+# 3. dbt (Data Build Tool)
+# ==========================================
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
 
-# Airflow
+# Local dbt configuration
+dbt/.user.yml
+
+# Local profiles may contain credentials
+dbt/profiles.yml
+!dbt/profiles.yml.example
+
+# ==========================================
+# 4. Apache Airflow & Runtime Files
+# ==========================================
 airflow/logs/
+airflow/__pycache__/
 airflow/dags/__pycache__/
 airflow/plugins/__pycache__/
 
-# dbt
-dbt/target/
-dbt/logs/
-dbt/dbt_packages/
-logs/
-dbt/.user.yml
+airflow/*.pid
+airflow/*.db
 
-# OS files
+logs/
+*.log
+
+# ==========================================
+# 5. IDE, Editors & OS Files
+# ==========================================
+.vscode/
+.idea/
+
+*.swp
+*.swo
+
 .DS_Store
 Thumbs.db
+
+# ==========================================
+# 6. Local Databases
+# ==========================================
+*.sqlite
+*.db
