@@ -4,7 +4,7 @@
 
 This project demonstrates the design and implementation of an end-to-end data engineering pipeline using modern data engineering practices.
 
-The goal of the project is to build a complete data workflow where data is collected from an external source, stored, transformed, validated, and prepared for analytical use.
+The goal of the project is to build a complete data workflow where data is collected from an external source, stored, transformed, validated, exposed through an API, and consumed through an interactive dashboard.
 
 The project demonstrates a professional data engineering workflow including:
 
@@ -14,6 +14,8 @@ The project demonstrates a professional data engineering workflow including:
 * Data transformation using dbt
 * Data quality validation
 * Analytical data modeling
+* API development
+* Interactive dashboard development
 * Containerized development environment
 * Version control and documentation practices
 
@@ -29,6 +31,8 @@ The main objectives of this project are to demonstrate:
 * Data quality validation
 * Workflow orchestration
 * Analytical data modeling
+* API development
+* Interactive data visualization
 * Professional software development workflow
 
 ---
@@ -57,10 +61,24 @@ Analytical Data Models
  fact_vehicle_activity)
         |
         v
-Dashboard / BI Layer
+FastAPI Backend
+        |
+        v
+React + TypeScript Dashboard
+        |
+        +--> Vehicle Monitoring Table
+        +--> KPI Overview
+        +--> Interactive Vehicle Map
+        +--> Vehicle History
 ```
 
-The architecture separates data collection, storage, transformation, and analytical consumption.
+The architecture separates:
+
+* Data collection
+* Data storage
+* Data transformation
+* Data serving
+* Data visualization
 
 The pipeline is orchestrated using Apache Airflow, which controls the execution order:
 
@@ -76,24 +94,32 @@ dbt_run
 dbt_test
 ```
 
+The current pipeline schedule runs every two minutes:
+
+```text
+schedule = "*/2 * * * *"
+```
+
 ---
 
 # Technology Stack
 
 The project uses the following technologies:
 
-| Area               | Technology      |
-| ------------------ | --------------- |
-| Programming        | Python          |
-| Orchestration      | Apache Airflow  |
-| Containerization   | Docker          |
-| Database           | PostgreSQL      |
-| Transformation     | dbt             |
-| Data Validation    | dbt Tests       |
-| Version Control    | Git & GitHub    |
+| Area | Technology |
+| ---- | ---------- |
+| Programming | Python |
+| Backend API | FastAPI |
+| Frontend | React + TypeScript |
+| Orchestration | Apache Airflow |
+| Containerization | Docker |
+| Database | PostgreSQL |
+| Transformation | dbt |
+| Data Validation | dbt Tests |
+| Mapping | Interactive Map |
+| Version Control | Git & GitHub |
 | Project Management | GitHub Projects |
-| CI/CD              | GitHub Actions  |
-| Visualization      | BI Dashboard    |
+| CI/CD | GitHub Actions |
 
 ---
 
@@ -107,12 +133,27 @@ end-to-end-data-engineering-pipeline/
 │   ├── logs/
 │   └── plugins/
 │
+├── api/
+│   ├── main.py
+│   ├── models.py
+│   └── queries.py
+│
 ├── dbt/
 │   ├── models/
 │   │   ├── staging/
 │   │   └── marts/
 │   ├── dbt_project.yml
 │   └── profiles.yml
+│
+├── frontend/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── types/
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   └── vite.config.ts
 │
 ├── src/
 │   ├── ingestion/
@@ -141,6 +182,8 @@ The current pipeline executes the following workflow:
 3. Vehicle position data is stored in PostgreSQL.
 4. dbt transforms raw data into analytical models.
 5. dbt tests validate the transformed data.
+6. FastAPI exposes analytical vehicle data through REST endpoints.
+7. React consumes the API and provides an interactive monitoring dashboard.
 
 Implemented dbt models:
 
@@ -151,7 +194,7 @@ Implemented dbt models:
 
 Current PostgreSQL data layers:
 
-### Raw Layer
+## Raw Layer
 
 ```text
 raw_vehicle_positions
@@ -159,7 +202,7 @@ raw_vehicle_positions
 
 Contains ingested vehicle position observations.
 
-### Analytics Layer
+## Analytics Layer
 
 ```text
 stg_vehicle_positions
@@ -168,7 +211,49 @@ fact_vehicle_activity
 dim_vehicle
 ```
 
-Provides structured data for analytical usage.
+Provides structured analytical data for downstream applications.
+
+---
+
+# API Layer
+
+The FastAPI backend provides endpoints for accessing vehicle data.
+
+Implemented endpoints:
+
+```text
+GET /vehicles/latest
+
+GET /vehicles/{vehicle_id}/history
+```
+
+The API acts as a bridge between the analytical database layer and the frontend dashboard.
+
+---
+
+# Dashboard Features
+
+The interactive React + TypeScript dashboard provides:
+
+* Near real-time vehicle monitoring
+* Vehicle search by ID
+* Vehicle status filtering
+* Data freshness monitoring
+* Moving / idle vehicle classification
+* Interactive vehicle map
+* KPI overview
+* Vehicle selection between map and table
+* Automatic scrolling to selected vehicles
+* Historical vehicle position analysis
+
+The dashboard monitors data freshness using:
+
+```text
+Fresh Data: < 5 minutes
+Stale Data: >= 5 minutes
+```
+
+This threshold aligns with the pipeline execution frequency.
 
 ---
 
@@ -201,18 +286,19 @@ More details can be found in:
 
 Current project status:
 
-| Component             | Status    |
-| --------------------- | --------- |
-| Repository setup      | Completed |
+| Component | Status |
+| --------- | ------ |
+| Repository setup | Completed |
 | Project documentation | Completed |
-| System architecture   | Completed |
-| Data ingestion        | Completed |
-| Database setup        | Completed |
+| System architecture | Completed |
+| Data ingestion | Completed |
+| Database setup | Completed |
 | Airflow orchestration | Completed |
-| dbt transformations   | Completed |
-| Data quality tests    | Completed |
-| CI/CD pipeline        | Planned   |
-| Dashboard             | Planned   |
+| dbt transformations | Completed |
+| Data quality tests | Completed |
+| FastAPI backend | Completed |
+| React dashboard | Completed |
+| CI/CD pipeline | Planned |
 
 ---
 
@@ -234,8 +320,8 @@ Project documentation:
 
 Potential future improvements:
 
-* Dashboard implementation
-* Advanced monitoring and observability
+* Advanced dashboard analytics
+* Event-driven streaming architecture
 * Cloud deployment
 * Additional data sources
 * Enhanced data quality checks
@@ -247,6 +333,7 @@ Potential future improvements:
 # Author
 
 **Henrik Oldehed**
+
 Data Engineer | Analytics Specialist
 
 [GitHub](https://github.com/nat15hol) | [LinkedIn](https://www.linkedin.com/in/henrikoldehed/)
