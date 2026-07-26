@@ -71,6 +71,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+.vite/
+*.tsbuildinfo
+
 # ==========================================
 # 6. IDE, Editors & OS Files
 # ==========================================
@@ -91,3 +94,6 @@ Thumbs.db
 # ==========================================
 *.sqlite
 *.db
+
+*.duckdb
+*.duckdb.wal

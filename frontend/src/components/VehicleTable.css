@@ -1,0 +1,246 @@
+.vehicle-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+
+/* Rad med sökfält och dropplistor */
+.vehicle-table__controls {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.vehicle-table__search {
+  flex: 2;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  background-color: var(--bg, #16171d);
+  color: var(--text-h, #fff);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.vehicle-table__select {
+  flex: 1;
+  padding: 10px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  background-color: var(--bg, #16171d);
+  color: var(--text-h, #fff);
+  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+}
+
+.vehicle-table__search:focus,
+.vehicle-table__select:focus {
+  border-color: var(--accent, #aa3bff);
+}
+
+.vehicle-table__count {
+  font-size: 13px;
+  color: var(--text, #9ca3af);
+  margin: 0;
+  text-align: left;
+}
+
+/* Scroll-behållare med sticky header */
+.vehicle-table__scroll-container {
+  overflow-y: auto;
+  max-height: 550px;
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+}
+
+.vehicle-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.vehicle-table th {
+  position: sticky;
+  top: 0;
+  background-color: var(--border, #2e303a);
+  color: var(--text-h, #f3f4f6);
+  padding: 10px 12px;
+  font-weight: 600;
+  z-index: 1;
+}
+
+.vehicle-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border, #2e303a);
+  color: var(--text, #9ca3af);
+  white-space: nowrap;
+}
+
+/* Rader & Hover-effekt */
+.vehicle-table__row {
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-left 0.15s ease;
+}
+
+.vehicle-table__row:hover {
+  background-color: var(--accent-bg, rgba(170, 59, 255, 0.1));
+}
+
+/* Tydligt markerad rad */
+.vehicle-table__row--selected {
+  background-color: var(--accent-bg, rgba(170, 59, 255, 0.18)) !important;
+  font-weight: 500;
+}
+
+.vehicle-table__row--selected td:first-child {
+  border-left: 4px solid var(--accent, #aa3bff);
+  color: var(--text-h, #fff);
+}
+
+.vehicle-table__id {
+  font-family: var(--mono, monospace);
+  font-weight: 600;
+  color: var(--text-h, #fff);
+}
+
+.vehicle-table__coords {
+  font-family: var(--mono, monospace);
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.vehicle-table__empty {
+  text-align: center;
+  padding: 20px !important;
+}
+
+/* --- Speed Status Badges --- */
+.speed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.speed-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* När fordonet rör sig (Speed > 0) */
+.speed-badge--moving {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+.speed-badge--moving .speed-badge__dot {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+/* När fordonet står stilla (Speed = 0) */
+.speed-badge--idle {
+  background-color: rgba(156, 163, 175, 0.12);
+  color: #9ca3af;
+}
+
+.speed-badge--idle .speed-badge__dot {
+  background-color: #6b7280;
+}
+
+/* Tvinga alla th att ha samma vertikala justering och linjehöjd */
+.vehicle-table th {
+  vertical-align: middle;
+  padding: 12px 16px;
+  font-weight: 600;
+  text-align: left;
+  user-select: none;
+}
+
+/* Sorterbara rubriker */
+.vehicle-table__th--sortable {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.vehicle-table__th--sortable:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Eller anpassad hover-färg */
+}
+
+/* Sorteringspilar */
+.sort-icon {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 0.85em;
+}
+
+.sort-icon--idle {
+  opacity: 0.3;
+}
+
+/* Tvinga alla rubrikceller att linjera perfekt i mitten */
+.vehicle-table th,
+.vehicle-table__th {
+  vertical-align: middle;
+  line-height: 1.2;
+  padding: 12px 16px;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Flexbox inuti klickbara rubriker för att hålla text och pil på samma linje */
+.vehicle-table__th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Gör sorteringsikonen till en inline-flex så den inte trycker ner texten */
+.sort-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  font-size: 0.85em;
+  vertical-align: middle;
+}
+
+/* Nollställ tabellhuvudets justering helt */
+.vehicle-table table thead tr {
+  height: 48px; /* Ger alla rubrikrader samma fasta höjd */
+}
+
+.vehicle-table table th,
+.vehicle-table__th {
+  vertical-align: middle !important; /* Tvinga alla celler att centreras vertikalt */
+  padding: 0 16px !important;
+  height: 48px;
+  line-height: 48px; /* Tvinga textens baslinje att vara identisk */
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* Sorterbara kolumner */
+.vehicle-table__th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Sorteringsikonen får inte påverka radhöjden */
+.sort-icon,
+.vehicle-table__sort-icon {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+  margin-left: 4px;
+  position: relative;
+  top: -1px; /* Finjustering om pilen drar ner texten */
+}

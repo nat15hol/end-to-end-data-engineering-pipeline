@@ -1,0 +1,29 @@
+.vehicle-map-container {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.vehicle-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Håller kartan under eventuella modaler/dropdowns */
+}
+
+/* Styling för popup-rutan på kartan */
+.map-popup {
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.map-popup strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #111827;
+}

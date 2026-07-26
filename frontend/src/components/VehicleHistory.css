@@ -1,0 +1,91 @@
+.vehicle-history {
+  /* Tog bort border, align-self: start och padding härifrån då App.css styr det */
+  position: sticky;
+  top: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicle-history--empty {
+  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.vehicle-history h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.vehicle-history__id {
+  color: #aaa; /* Justerad för mörkare bakgrund */
+  font-size: 13px;
+  margin: 0 0 16px;
+}
+
+.vehicle-history__scroll-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.vehicle-history table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.vehicle-history th {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.08); /* Mörkt läge för header */
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border, #444);
+}
+
+.vehicle-history td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.05));
+}
+
+.vehicle-history__error {
+  color: #b3261e;
+}
+
+.vehicle-history__summary-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background-color: var(--border, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888888;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vehicle-history h3 {
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  color: #aaaaaa;
+}

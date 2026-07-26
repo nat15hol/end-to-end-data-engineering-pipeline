@@ -7,7 +7,7 @@ from datetime import datetime
 with DAG(
     dag_id="vehicle_pipeline",
     start_date=datetime(2026, 7, 23),
-    schedule="@hourly",
+    schedule="*/2 * * * *",  # Körs nu varannan minut!
     catchup=False,
 ) as dag:
 

@@ -1,0 +1,44 @@
+.vehicle-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card__label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-card__value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Färgackenter i överkanten */
+.stat-card--fresh {
+  border-top: 4px solid #10b981; /* Grön */
+}
+
+.stat-card--stale {
+  border-top: 4px solid #f59e0b; /* Gul/Bärnsten */
+}
+
+.stat-card--moving {
+  border-top: 4px solid #3b82f6; /* Blå */
+}
