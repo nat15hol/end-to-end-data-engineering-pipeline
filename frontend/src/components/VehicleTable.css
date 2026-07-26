@@ -1,11 +1,12 @@
+/* --- HUVUDBEHÅLLARE FÖR TABELLEN --- */
 .vehicle-table {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: 100%;
+  box-sizing: border-box;
 }
 
-/* Rad med sökfält och dropplistor */
+/* --- KONTROLLER (Sökfält & Filtrering) --- */
 .vehicle-table__controls {
   display: flex;
   gap: 8px;
@@ -50,14 +51,15 @@
   text-align: left;
 }
 
-/* Scroll-behållare med sticky header */
+/* --- SCROLL-BEHÅLLARE MED UTÖKAD HÖJD --- */
 .vehicle-table__scroll-container {
+  max-height: 690px; /* Ändrat från 600px för att visa fler rader */
   overflow-y: auto;
-  max-height: 550px;
   border: 1px solid var(--border, #333);
   border-radius: 6px;
 }
 
+/* --- TABELLSTYRNING & RUBRIKER --- */
 .vehicle-table table {
   width: 100%;
   border-collapse: collapse;
@@ -65,16 +67,55 @@
   text-align: left;
 }
 
-.vehicle-table th {
+.vehicle-table table thead tr {
+  height: 48px;
+}
+
+.vehicle-table th,
+.vehicle-table__th {
   position: sticky;
   top: 0;
   background-color: var(--border, #2e303a);
   color: var(--text-h, #f3f4f6);
-  padding: 10px 12px;
+  vertical-align: middle !important;
+  padding: 0 16px !important;
+  height: 48px;
+  line-height: 48px;
   font-weight: 600;
+  white-space: nowrap;
+  box-sizing: border-box;
   z-index: 1;
+  text-align: left;
 }
 
+/* Sorterbara kolumner */
+.vehicle-table__th--sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+.vehicle-table__th--sortable:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Sorteringspilar */
+.sort-icon,
+.vehicle-table__sort-icon {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+  margin-left: 6px;
+  font-size: 0.85em;
+  position: relative;
+  top: -1px;
+}
+
+.sort-icon--idle {
+  opacity: 0.3;
+}
+
+/* --- CELLER & RADER --- */
 .vehicle-table td {
   padding: 10px 12px;
   border-bottom: 1px solid var(--border, #2e303a);
@@ -82,7 +123,6 @@
   white-space: nowrap;
 }
 
-/* Rader & Hover-effekt */
 .vehicle-table__row {
   cursor: pointer;
   transition: background-color 0.15s ease, border-left 0.15s ease;
@@ -92,7 +132,7 @@
   background-color: var(--accent-bg, rgba(170, 59, 255, 0.1));
 }
 
-/* Tydligt markerad rad */
+/* Markerad rad (När användaren klickat på fordonet) */
 .vehicle-table__row--selected {
   background-color: var(--accent-bg, rgba(170, 59, 255, 0.18)) !important;
   font-weight: 500;
@@ -120,7 +160,7 @@
   padding: 20px !important;
 }
 
-/* --- Speed Status Badges --- */
+/* --- SPEED STATUS BADGES --- */
 .speed-badge {
   display: inline-flex;
   align-items: center;
@@ -156,91 +196,4 @@
 
 .speed-badge--idle .speed-badge__dot {
   background-color: #6b7280;
-}
-
-/* Tvinga alla th att ha samma vertikala justering och linjehöjd */
-.vehicle-table th {
-  vertical-align: middle;
-  padding: 12px 16px;
-  font-weight: 600;
-  text-align: left;
-  user-select: none;
-}
-
-/* Sorterbara rubriker */
-.vehicle-table__th--sortable {
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.vehicle-table__th--sortable:hover {
-  background-color: rgba(255, 255, 255, 0.05); /* Eller anpassad hover-färg */
-}
-
-/* Sorteringspilar */
-.sort-icon {
-  display: inline-block;
-  margin-left: 6px;
-  font-size: 0.85em;
-}
-
-.sort-icon--idle {
-  opacity: 0.3;
-}
-
-/* Tvinga alla rubrikceller att linjera perfekt i mitten */
-.vehicle-table th,
-.vehicle-table__th {
-  vertical-align: middle;
-  line-height: 1.2;
-  padding: 12px 16px;
-  font-weight: 600;
-  text-align: left;
-}
-
-/* Flexbox inuti klickbara rubriker för att hålla text och pil på samma linje */
-.vehicle-table__th--sortable {
-  cursor: pointer;
-  user-select: none;
-}
-
-/* Gör sorteringsikonen till en inline-flex så den inte trycker ner texten */
-.sort-icon {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 6px;
-  font-size: 0.85em;
-  vertical-align: middle;
-}
-
-/* Nollställ tabellhuvudets justering helt */
-.vehicle-table table thead tr {
-  height: 48px; /* Ger alla rubrikrader samma fasta höjd */
-}
-
-.vehicle-table table th,
-.vehicle-table__th {
-  vertical-align: middle !important; /* Tvinga alla celler att centreras vertikalt */
-  padding: 0 16px !important;
-  height: 48px;
-  line-height: 48px; /* Tvinga textens baslinje att vara identisk */
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
-/* Sorterbara kolumner */
-.vehicle-table__th--sortable {
-  cursor: pointer;
-  user-select: none;
-}
-
-/* Sorteringsikonen får inte påverka radhöjden */
-.sort-icon,
-.vehicle-table__sort-icon {
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 1;
-  margin-left: 4px;
-  position: relative;
-  top: -1px; /* Finjustering om pilen drar ner texten */
 }

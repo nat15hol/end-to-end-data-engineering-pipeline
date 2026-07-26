@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { VehiclePosition } from "../types/vehicle";
 import "./VehicleTable.css";
 
@@ -46,6 +46,9 @@ function VehicleTable({
   // Håller koll på nuvarande tid för realtidssekunder
   const [now, setNow] = useState<number>(Date.now());
 
+  // 1. Ref-map för tabellrader
+  const rowRefs = useRef<{ [key: string]: HTMLTableRowElement | null }>({});
+
   useEffect(() => {
     const timer = setInterval(() => {
       setNow(Date.now());
@@ -53,6 +56,16 @@ function VehicleTable({
 
     return () => clearInterval(timer);
   }, []);
+
+  // 2. Auto-scrolla till valt fordon när selectedVehicleId ändras
+  useEffect(() => {
+    if (selectedVehicleId && rowRefs.current[selectedVehicleId]) {
+      rowRefs.current[selectedVehicleId]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest", // Scrollar ENDAST om raden inte redan är synlig!
+      });
+    }
+  }, [selectedVehicleId]);
 
   // Hantera klick på kolumnrubriker
   const handleSort = (field: SortField) => {
@@ -155,23 +168,23 @@ function VehicleTable({
       <div className="vehicle-table__scroll-container">
         <table>
           <thead>
-  <tr>
-    <th className="vehicle-table__th">Vehicle ID</th>
-    <th
-      className="vehicle-table__th vehicle-table__th--sortable"
-      onClick={() => handleSort("speed")}
-    >
-      Speed {renderSortIcon("speed")}
-    </th>
-    <th
-      className="vehicle-table__th vehicle-table__th--sortable"
-      onClick={() => handleSort("recorded_at")}
-    >
-      Last seen {renderSortIcon("recorded_at")}
-    </th>
-    <th className="vehicle-table__th">Coordinates</th>
-  </tr>
-</thead>
+            <tr>
+              <th className="vehicle-table__th">Vehicle ID</th>
+              <th
+                className="vehicle-table__th vehicle-table__th--sortable"
+                onClick={() => handleSort("speed")}
+              >
+                Speed {renderSortIcon("speed")}
+              </th>
+              <th
+                className="vehicle-table__th vehicle-table__th--sortable"
+                onClick={() => handleSort("recorded_at")}
+              >
+                Last seen {renderSortIcon("recorded_at")}
+              </th>
+              <th className="vehicle-table__th">Coordinates</th>
+            </tr>
+          </thead>
 
           <tbody>
             {filteredAndSortedVehicles.map((vehicle) => {
@@ -182,6 +195,10 @@ function VehicleTable({
               return (
                 <tr
                   key={vehicle.vehicle_id}
+                  // 3. Koppla ref till denna specifika rad
+                  ref={(el) => {
+                    rowRefs.current[vehicle.vehicle_id] = el;
+                  }}
                   className={`vehicle-table__row ${
                     isSelected ? "vehicle-table__row--selected" : ""
                   }`}

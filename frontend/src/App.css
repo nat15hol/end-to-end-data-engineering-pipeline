@@ -1,10 +1,12 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
+  background-color: var(--bg, #0f1015);
+  color: var(--text, #9ca3af);
 }
 
 #root {
-  max-width: 1200px;
+  max-width: 1400px; /* Lite extra bredd så att både tabell och karta får plats bekvämt */
   margin: 0 auto;
   padding: 2rem;
   text-align: left;
@@ -12,9 +14,10 @@ body {
 
 h1 {
   margin-bottom: 1.5rem;
+  color: var(--text-h, #fff);
 }
 
-/* Tabellstyling */
+/* Tabell-grundstil */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -39,12 +42,12 @@ tbody tr:hover {
 /* --- TVÅ KOLUMNER (SPLIT VIEW) --- */
 .app__split-view {
   display: grid;
-  grid-template-columns: 1.6fr 1fr; /* Behåller två kolumner brevid varandra */
+  grid-template-columns: 1.6fr 1fr; /* Tabell till vänster, karta/detaljer till höger */
   gap: 20px;
   align-items: stretch; /* Gör att båda kolumnerna täcker exakt samma höjd */
 }
 
-/* --- ENHETLIG KORT-STIL OCH EXAKT LIKA BOTTEN --- */
+/* --- ENHETLIG KORT-STIL --- */
 .app__split-view > * {
   background: var(--code-bg, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--border, #333);
@@ -53,27 +56,21 @@ tbody tr:hover {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  margin-bottom: 0 !important; /* Tar bort yttre marginaler som kan diffa */
 }
 
-/* Nollställer bottenmarginalen på sista elementet inuti boxarna så att de stoppar exakt lika */
-.app__split-view > * *:last-child {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-}
-
+/* Felmeddelanden */
 .app__error {
-  color: #b3261e;
+  color: #f87171;
+  background-color: rgba(239, 68, 68, 0.1);
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  margin-bottom: 1rem;
 }
 
-/* Responsiv layout – blir en kolumn först när man är på mobiler/små skärmar */
+/* Responsiv layout – staplas vertikalt på mindre skärmar */
 @media (max-width: 900px) {
   .app__split-view {
     grid-template-columns: 1fr;
   }
-}
-
-.app__map-section {
-  height: 450px;
-  margin-bottom: 24px;
 }
