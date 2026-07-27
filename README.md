@@ -327,7 +327,7 @@ docs/verification-test.md
 | FastAPI backend | ✅ Completed |
 | React dashboard | ✅ Completed |
 | End-to-end verification | ✅ Completed |
-| CI/CD pipeline | ✅ CI Completed |
+| CI/CD pipeline | CI Completed |
 
 ---
 
