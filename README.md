@@ -1,5 +1,7 @@
 # End-to-End Data Engineering Pipeline
 
+![CI](https://github.com/nat15hol/end-to-end-data-engineering-pipeline/actions/workflows/ci.yml/badge.svg)
+
 ## Overview
 
 This project demonstrates the design and implementation of an end-to-end data engineering pipeline using modern data engineering practices.
