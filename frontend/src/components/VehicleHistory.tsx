@@ -32,9 +32,6 @@ function VehicleHistory({ vehicleId, selectedVehicle }: VehicleHistoryProps) {
 
     let isCancelled = false;
 
-    setIsLoading(true);
-    setError(null);
-
     fetchVehicleHistory(vehicleId)
       .then((data) => {
         if (!isCancelled) {
