@@ -243,6 +243,35 @@ The following functionality was verified in the browser:
 
 ---
 
+## 8. Regression Verification After Frontend Updates
+
+A second manual verification was performed after frontend structure improvements and API client restructuring.
+
+### Verification
+
+The following was verified:
+
+- Backend API startup: ✅
+- API health endpoint: ✅
+- Latest vehicle positions endpoint: ✅
+- Vehicle history endpoint: ✅
+- Frontend startup with Vite: ✅
+- Vehicle list rendering: ✅
+- Backend data integration: ✅
+- Vehicle selection: ✅
+- Vehicle Overview display: ✅
+- Location History display: ✅
+
+### Result
+
+The implemented frontend improvements and API structure changes were verified without regression.
+
+The application continues to operate correctly end-to-end.
+
+✅ Passed
+
+---
+
 # Scope and Limitations
 
 This verification confirms that the main application flow works in a local development environment.
@@ -270,7 +299,7 @@ The following areas are not covered:
 
 The end-to-end verification was successfully completed.
 
-All major application components were verified:
+All major application components were verified in the local development environment:
 
 - Data pipeline
 - PostgreSQL database
