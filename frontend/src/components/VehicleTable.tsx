@@ -44,7 +44,7 @@ function VehicleTable({
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   // Håller koll på nuvarande tid för realtidssekunder
-  const [now, setNow] = useState<number>(Date.now());
+  const [now, setNow] = useState<number>(() => Date.now());
 
   // 1. Ref-map för tabellrader
   const rowRefs = useRef<{ [key: string]: HTMLTableRowElement | null }>({});

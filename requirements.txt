@@ -3,3 +3,9 @@ python-dotenv
 protobuf
 gtfs-realtime-bindings
 dbt-postgres
+
+fastapi
+uvicorn
+SQLAlchemy
+psycopg2-binary
+pydantic

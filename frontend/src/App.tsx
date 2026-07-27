@@ -19,9 +19,6 @@ function App() {
   useEffect(() => {
     let isCancelled = false;
 
-    setIsLoading(true);
-    setError(null);
-
     fetchLatestVehicles()
       .then((data) => {
         if (!isCancelled) {

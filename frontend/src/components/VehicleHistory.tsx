@@ -27,11 +27,11 @@ function VehicleHistory({ vehicleId, selectedVehicle }: VehicleHistoryProps) {
 
   useEffect(() => {
     if (!vehicleId) {
-      setHistory([]);
       return;
     }
 
     let isCancelled = false;
+
     setIsLoading(true);
     setError(null);
 
@@ -39,15 +39,13 @@ function VehicleHistory({ vehicleId, selectedVehicle }: VehicleHistoryProps) {
       .then((data) => {
         if (!isCancelled) {
           setHistory(data);
+          setIsLoading(false);
+          setError(null);
         }
       })
       .catch(() => {
         if (!isCancelled) {
           setError("Failed to fetch vehicle history.");
-        }
-      })
-      .finally(() => {
-        if (!isCancelled) {
           setIsLoading(false);
         }
       });

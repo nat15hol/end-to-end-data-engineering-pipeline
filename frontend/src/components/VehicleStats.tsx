@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type { VehiclePosition } from "../types/vehicle";
 import "./VehicleStats.css";
 
@@ -10,8 +10,17 @@ interface VehicleStatsProps {
 }
 
 export function VehicleStats({ vehicles }: VehicleStatsProps) {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 30000); // Uppdatera var 30:e sekund för att hålla tidsberäkningen färsk
+
+    return () => clearInterval(interval);
+  }, []);
+
   const stats = useMemo(() => {
-    const now = Date.now();
     let freshCount = 0;
     let staleCount = 0;
     let movingCount = 0;
@@ -40,7 +49,7 @@ export function VehicleStats({ vehicles }: VehicleStatsProps) {
       stale: staleCount,
       moving: movingCount,
     };
-  }, [vehicles]);
+  }, [vehicles, now]);
 
   return (
     <div className="vehicle-stats">

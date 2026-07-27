@@ -60,11 +60,11 @@ export const VehicleMap = ({
     markersRef.current = {};
 
     vehicles.forEach((vehicle) => {
-      const lat = vehicle.latitude ?? (vehicle as any).lat;
-      const lng = vehicle.longitude ?? (vehicle as any).lng;
-      const vehicleId = vehicle.vehicle_id ?? (vehicle as any).id;
+      const lat = vehicle.latitude;
+      const lng = vehicle.longitude;
+      const vehicleId = vehicle.vehicle_id;
 
-      if (!lat || !lng || !vehicleId) return;
+      if (lat === undefined || lng === undefined || !vehicleId) return;
 
       const speedKmh = (vehicle.speed * 3.6).toFixed(1);
       const isMoving = vehicle.speed * 3.6 > 2.0;
@@ -93,16 +93,13 @@ export const VehicleMap = ({
     const map = mapRef.current;
     if (!map || !selectedVehicleId) return;
 
-    const selectedVehicle = vehicles.find((v) => {
-      const vId = v.vehicle_id ?? (v as any).id;
-      return vId === selectedVehicleId;
-    });
+    const selectedVehicle = vehicles.find((v) => v.vehicle_id === selectedVehicleId);
 
     if (selectedVehicle) {
-      const lat = selectedVehicle.latitude ?? (selectedVehicle as any).lat;
-      const lng = selectedVehicle.longitude ?? (selectedVehicle as any).lng;
+      const lat = selectedVehicle.latitude;
+      const lng = selectedVehicle.longitude;
 
-      if (lat && lng) {
+      if (lat !== undefined && lng !== undefined) {
         map.flyTo([lat, lng], 14, {
           duration: 1.2,
         });
