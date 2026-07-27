@@ -104,8 +104,6 @@ schedule = "*/2 * * * *"
 
 # Technology Stack
 
-The project uses the following technologies:
-
 | Area | Technology |
 | ---- | ---------- |
 | Programming | Python |
@@ -217,7 +215,7 @@ Provides structured analytical data for downstream applications.
 
 # API Layer
 
-The FastAPI backend provides endpoints for accessing vehicle data.
+The FastAPI backend provides REST endpoints for accessing vehicle data.
 
 Implemented endpoints:
 
@@ -227,7 +225,7 @@ GET /vehicles/latest
 GET /vehicles/{vehicle_id}/history
 ```
 
-The API acts as a bridge between the analytical database layer and the frontend dashboard.
+The API acts as a bridge between the analytical database layer and the React dashboard.
 
 ---
 
@@ -261,13 +259,13 @@ This threshold aligns with the pipeline execution frequency.
 
 The project follows an agile Kanban workflow using GitHub Projects.
 
-The workflow is:
+Workflow:
 
 ```text
 Backlog → Ready → In Progress → In Review → Done
 ```
 
-Development follows:
+Development practices include:
 
 * Feature branches
 * Pull Requests
@@ -275,42 +273,74 @@ Development follows:
 * Documentation-driven decisions
 * Automated quality checks
 
-More details can be found in:
+Further documentation:
 
-* [Project Plan](docs/project_plan.md)
-* [Delivery Process](docs/delivery_process.md)
+* `docs/project_plan.md`
+* `docs/delivery_process.md`
+
+---
+
+# Verification
+
+The complete application has been manually verified through end-to-end testing.
+
+The verification confirms successful integration between:
+
+* GTFS data ingestion
+* PostgreSQL
+* dbt transformations
+* FastAPI backend
+* React frontend
+
+Verified functionality includes:
+
+* Backend startup
+* API health endpoint
+* Latest vehicle endpoint
+* Vehicle history endpoint
+* Frontend startup
+* Vehicle monitoring dashboard
+* Vehicle selection
+* Vehicle overview
+* Location history
+
+A complete verification report is available in:
+
+```text
+docs/verification-test.md
+```
 
 ---
 
 # Data Pipeline Status
 
-Current project status:
-
 | Component | Status |
 | --------- | ------ |
-| Repository setup | Completed |
-| Project documentation | Completed |
-| System architecture | Completed |
-| Data ingestion | Completed |
-| Database setup | Completed |
-| Airflow orchestration | Completed |
-| dbt transformations | Completed |
-| Data quality tests | Completed |
-| FastAPI backend | Completed |
-| React dashboard | Completed |
-| CI/CD pipeline | Planned |
+| Repository setup | ✅ Completed |
+| Project documentation | ✅ Completed |
+| System architecture | ✅ Completed |
+| Data ingestion | ✅ Completed |
+| Database setup | ✅ Completed |
+| Airflow orchestration | ✅ Completed |
+| dbt transformations | ✅ Completed |
+| Data quality tests | ✅ Completed |
+| FastAPI backend | ✅ Completed |
+| React dashboard | ✅ Completed |
+| End-to-end verification | ✅ Completed |
+| CI/CD pipeline | ⏳ Planned |
 
 ---
 
 # Documentation
 
-Project documentation:
+Available documentation:
 
 * Project Plan
 * Delivery Process
+* Verification Test Report
 * System Architecture
 * Data Model
-* Architecture Decision Records
+* Architecture Decision Records (ADRs)
 * Test Strategy
 * CI/CD Documentation
 
@@ -320,13 +350,14 @@ Project documentation:
 
 Potential future improvements:
 
+* Automated end-to-end testing
 * Advanced dashboard analytics
 * Event-driven streaming architecture
 * Cloud deployment
 * Additional data sources
 * Enhanced data quality checks
 * Automated metadata generation
-* Production CI/CD deployment
+* Production-ready CI/CD deployment
 
 ---
 
@@ -336,6 +367,8 @@ Potential future improvements:
 
 Data Engineer | Analytics Specialist
 
-[GitHub](https://github.com/nat15hol) | [LinkedIn](https://www.linkedin.com/in/henrikoldehed/)
+GitHub: https://github.com/nat15hol
+
+LinkedIn: https://www.linkedin.com/in/henrikoldehed/
 
 Portfolio project demonstrating modern Data Engineering practices.
