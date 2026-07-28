@@ -9,3 +9,5 @@ uvicorn
 SQLAlchemy
 psycopg2-binary
 pydantic
+
+pytest
