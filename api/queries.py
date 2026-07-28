@@ -1,6 +1,6 @@
 from sqlalchemy import text
 
-from database import engine
+from api.database import engine
 
 
 def get_latest_vehicle_positions():

@@ -1,17 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from queries import (
+from api.queries import (
     get_latest_vehicle_positions,
     get_vehicle_history
 )
 
-from models import VehiclePosition
+from api.models import VehiclePosition
 
 
 app = FastAPI(
     title="Fleet Intelligence API"
 )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,12 +20,13 @@ app.add_middleware(
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
-        "http://localhost:5176",  # <--- Lägg till din nuvarande port!
+        "http://localhost:5176",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/")
 def root():
