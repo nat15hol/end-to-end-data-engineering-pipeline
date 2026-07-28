@@ -1,14 +1,22 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
-from datetime import datetime
+from datetime import datetime, timedelta
+
+
+default_args = {
+    "retries": 3,
+    "retry_delay": timedelta(minutes=2),
+}
 
 
 with DAG(
     dag_id="vehicle_pipeline",
     start_date=datetime(2026, 7, 23),
-    schedule="*/2 * * * *",  # Körs nu varannan minut!
+    schedule="*/2 * * * *",
     catchup=False,
+    default_args=default_args,
+    max_active_runs=1,
 ) as dag:
 
     ingestion = BashOperator(
