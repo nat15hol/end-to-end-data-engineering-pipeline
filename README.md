@@ -8,7 +8,7 @@
 
 This project demonstrates the design and implementation of an end-to-end data engineering pipeline using modern data engineering practices.
 
-The goal of the project is to build a complete data workflow where data is collected from an external source, stored, transformed, validated, exposed through an API, and consumed through an interactive dashboard.
+The goal of the project is to demonstrate a complete data workflow where data is collected from an external source, stored, transformed, validated, exposed through an API, and consumed through an interactive dashboard.
 
 The project demonstrates a professional data engineering workflow including:
 
@@ -17,6 +17,7 @@ The project demonstrates a professional data engineering workflow including:
 * Data storage and management
 * Data transformation using dbt
 * Data quality validation
+* Automated testing and quality assurance
 * Analytical data modeling
 * API development
 * Interactive dashboard development
@@ -88,6 +89,14 @@ The current pipeline schedule runs every two minutes:
 schedule = "*/2 * * * *"
 ```
 
+## Reliability
+
+To reduce the impact of transient failures, the pipeline includes:
+
+* Retry logic with exponential backoff in the ingestion client, handling HTTP 429 and 5xx responses from the Trafiklab API
+* Structured logging around ingestion requests and failures
+* Airflow DAG-level retries and retry delays via shared `default_args`, so temporary task failures do not halt the schedule
+
 ---
 
 # Technology Stack
@@ -98,14 +107,109 @@ schedule = "*/2 * * * *"
 | Backend API | FastAPI |
 | Frontend | React + TypeScript |
 | Orchestration | Apache Airflow |
-| Containerization | Docker Desktop |
+| Containerization | Docker & Docker Compose |
 | Database | PostgreSQL |
 | Transformation | dbt |
-| Data Validation | dbt Tests |
+| Data Quality | dbt Tests |
+| Automated Testing | pytest |
 | Mapping | Interactive Map |
 | Version Control | Git & GitHub |
 | Project Management | GitHub Projects |
 | Continuous Integration | GitHub Actions |
+
+---
+
+# Getting Started
+
+Follow these instructions to run the project locally.
+
+## Prerequisites
+
+Make sure you have the following installed:
+
+* **Docker Desktop & Docker Compose** (for PostgreSQL and Apache Airflow)
+* **Python 3.12+** (for the FastAPI backend)
+* **Node.js 22+** (for the React frontend)
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/nat15hol/end-to-end-data-engineering-pipeline.git
+cd end-to-end-data-engineering-pipeline
+```
+
+## 2. Configure environment variables
+
+Create a local environment file from the provided example:
+
+```bash
+cp .env.example .env
+```
+
+Update the environment variables with your local configuration, including your Trafiklab API key.
+
+Required configuration includes:
+
+* PostgreSQL database settings
+* Trafiklab API key for data ingestion
+
+Example variables:
+
+```dotenv
+POSTGRES_USER=your_username
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=your_database
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+
+TRAFIKLAB_API_KEY=your_api_key_here
+```
+
+## 3. Start PostgreSQL and Airflow
+
+Start the containerized services:
+
+```bash
+docker compose up --build
+```
+
+This starts:
+
+| Service | URL |
+| ------- | --- |
+| Apache Airflow Webserver | http://localhost:8080 |
+| PostgreSQL Database | localhost:5432 |
+
+## 4. Run the FastAPI backend
+
+The FastAPI backend is currently started separately.
+
+Open a new terminal:
+
+```bash
+cd api
+pip install -r ../requirements.txt
+uvicorn main:app --reload
+```
+
+The API will be available at:
+
+* http://localhost:8000
+* Interactive API documentation: http://localhost:8000/docs
+
+## 5. Run the React dashboard
+
+The React dashboard is currently started separately.
+
+Open a new terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The dashboard will be available at `http://localhost:5173`.
 
 ---
 
@@ -122,6 +226,7 @@ end-to-end-data-engineering-pipeline/
 │   └── plugins/
 │
 ├── api/
+│   ├── __init__.py
 │   ├── main.py
 │   ├── models.py
 │   └── queries.py
@@ -147,17 +252,30 @@ end-to-end-data-engineering-pipeline/
 │   └── vite.config.ts
 │
 ├── src/
+│   ├── __init__.py
 │   ├── ingestion/
 │   └── database/
 │
 ├── tests/
+│   ├── test_transformer.py
+│   └── test_api.py
 │
 ├── docs/
+│   ├── ci-cd.md
+│   ├── data_model.md
+│   ├── delivery_process.md
+│   ├── project_plan.md
+│   ├── system_architecture.md
+│   └── verification-test.md
 │
 ├── docker/
+│   └── airflow/
+│       └── Dockerfile
 │
 ├── docker-compose.yml
+├── pytest.ini
 ├── requirements.txt
+├── .env.example
 ├── README.md
 └── .gitignore
 ```
@@ -213,12 +331,14 @@ The FastAPI backend provides REST endpoints for accessing vehicle data.
 Implemented endpoints:
 
 ```text
+GET /                                  Health check
 GET /vehicles/latest
-
 GET /vehicles/{vehicle_id}/history
 ```
 
 The API acts as a bridge between the analytical database layer and the React dashboard.
+
+FastAPI automatically provides interactive OpenAPI documentation through Swagger UI, available at `/docs`.
 
 ---
 
@@ -250,15 +370,55 @@ This threshold aligns with the pipeline execution frequency.
 
 # Dashboard Preview
 
+The dashboard provides near real-time visibility into vehicle positions, status, and historical movement.
+
 ![Dashboard overview](docs/images/dashboard-overview.png)
 
 ## Dashboard Interaction
 
 The dashboard supports interaction between the vehicle table and map view.
-
 Selecting a vehicle highlights the corresponding row and updates the map position.
 
 ![Dashboard detail view](docs/images/dashboard-detail-v2.png)
+
+---
+
+# Testing
+
+The project includes an automated test suite built with `pytest`, covering both the data transformation logic and the API layer.
+
+## Ingestion Tests
+
+Unit tests validate the GTFS-RT transformation logic, including:
+
+* Correct transformation of valid vehicle position data
+* Filtering of records missing vehicle information
+
+## API Tests
+
+API tests use FastAPI's `TestClient` to validate the following endpoints:
+
+```text
+GET /
+GET /vehicles/latest
+GET /vehicles/{vehicle_id}/history
+```
+
+The database layer is mocked using `monkeypatch`, so these tests run without requiring a live PostgreSQL instance.
+
+## Running the Tests
+
+```bash
+pytest
+```
+
+Current test suite:
+
+```text
+5 passed
+```
+
+The full test suite runs automatically in GitHub Actions on every push and pull request targeting `main`.
 
 ---
 
@@ -289,7 +449,7 @@ Further documentation:
 
 # Verification
 
-The application has been manually verified through end-to-end testing.
+The application has been manually verified through complete system validation, and core backend logic is additionally verified through an automated test suite (see [Testing](#testing)).
 
 The verification confirms successful integration between:
 
@@ -315,9 +475,15 @@ Automated validation is performed through GitHub Actions.
 
 The CI workflow validates:
 
+Backend:
+
+* Automated test suite (`pytest`) for ingestion logic and API endpoints
 * Python code compilation for backend components
-* Frontend linting
-* Frontend production build
+
+Frontend:
+
+* Linting
+* Production build
 
 The CI workflow runs on:
 
@@ -339,7 +505,8 @@ The complete verification report is available in [Verification Test Report](docs
 | Database setup | ✅ Completed |
 | Airflow orchestration | ✅ Completed |
 | dbt transformations | ✅ Completed |
-| Data quality tests | ✅ Completed |
+| Data quality validation | ✅ Completed |
+| Automated testing | ✅ Completed |
 | FastAPI backend | ✅ Completed |
 | React dashboard | ✅ Completed |
 | End-to-end verification | ✅ Completed |
@@ -364,14 +531,15 @@ Available documentation:
 
 Potential future improvements:
 
-* Automated end-to-end testing
+* Full automated pipeline execution testing
+* Browser-based end-to-end testing
 * Advanced dashboard analytics
 * Event-driven streaming architecture
-* Cloud deployment
 * Additional data sources
-* Enhanced data quality checks
+* Enhanced data quality checks (freshness checks, anomaly detection)
 * Automated metadata generation
-* Production-ready CI/CD deployment
+* Alerting on Airflow task failures
+* Cloud-based production deployment
 
 ---
 
