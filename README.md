@@ -25,22 +25,6 @@ The project demonstrates a professional data engineering workflow including:
 
 ---
 
-# Project Goals
-
-The main objectives of this project are to demonstrate:
-
-* Data ingestion from external sources
-* Data storage and management
-* Data transformation using modern engineering practices
-* Data quality validation
-* Workflow orchestration
-* Analytical data modeling
-* API development
-* Interactive data visualization
-* Professional software development workflow
-
----
-
 # Architecture Overview
 
 The implemented high-level architecture:
@@ -114,14 +98,14 @@ schedule = "*/2 * * * *"
 | Backend API | FastAPI |
 | Frontend | React + TypeScript |
 | Orchestration | Apache Airflow |
-| Containerization | Docker |
+| Containerization | Docker Desktop |
 | Database | PostgreSQL |
 | Transformation | dbt |
 | Data Validation | dbt Tests |
 | Mapping | Interactive Map |
 | Version Control | Git & GitHub |
 | Project Management | GitHub Projects |
-| CI/CD | GitHub Actions |
+| Continuous Integration | GitHub Actions |
 
 ---
 
@@ -130,15 +114,20 @@ schedule = "*/2 * * * *"
 ```text
 end-to-end-data-engineering-pipeline/
 
+├── .github/
+│   └── workflows/
+│
 ├── airflow/
 │   ├── dags/
-│   ├── logs/
 │   └── plugins/
 │
 ├── api/
 │   ├── main.py
 │   ├── models.py
 │   └── queries.py
+│
+├── analysis/
+│   └── check_vehicle_data.py
 │
 ├── dbt/
 │   ├── models/
@@ -300,11 +289,11 @@ Further documentation:
 
 # Verification
 
-The complete application has been manually verified through end-to-end testing.
+The application has been manually verified through end-to-end testing.
 
 The verification confirms successful integration between:
 
-* GTFS data ingestion
+* GTFS-RT data ingestion
 * PostgreSQL
 * dbt transformations
 * FastAPI backend
@@ -322,11 +311,20 @@ Verified functionality includes:
 * Vehicle overview
 * Location history
 
-A complete verification report is available in:
+Automated validation is performed through GitHub Actions.
 
-```text
-docs/verification-test.md
-```
+The CI workflow validates:
+
+* Python code compilation for backend components
+* Frontend linting
+* Frontend production build
+
+The CI workflow runs on:
+
+* Pushes to main
+* Pull requests targeting main
+
+The complete verification report is available in [Verification Test Report](docs/verification-test.md).
 
 ---
 
@@ -345,7 +343,7 @@ docs/verification-test.md
 | FastAPI backend | ✅ Completed |
 | React dashboard | ✅ Completed |
 | End-to-end verification | ✅ Completed |
-| CI pipeline | ✅ Completed |
+| CI workflow | ✅ Completed |
 
 ---
 
@@ -353,14 +351,12 @@ docs/verification-test.md
 
 Available documentation:
 
-* Project Plan
-* Delivery Process
-* Verification Test Report
-* System Architecture
-* Data Model
-* Architecture Decision Records (ADRs)
-* Test Strategy
-* CI/CD Documentation
+* [Project Plan](docs/project_plan.md)
+* [Delivery Process](docs/delivery_process.md)
+* [Verification Test Report](docs/verification-test.md)
+* [System Architecture](docs/system_architecture.md)
+* [Data Model](docs/data_model.md)
+* [CI Documentation](docs/ci-cd.md)
 
 ---
 
