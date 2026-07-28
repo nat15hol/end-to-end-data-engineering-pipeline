@@ -259,6 +259,20 @@ This threshold aligns with the pipeline execution frequency.
 
 ---
 
+# Dashboard Preview
+
+![Dashboard overview](docs/images/dashboard-overview.png)
+
+## Dashboard Interaction
+
+The dashboard supports interaction between the vehicle table and map view.
+
+Selecting a vehicle highlights the corresponding row and updates the map position.
+
+![Dashboard detail view](docs/images/dashboard-detail.png)
+
+---
+
 # Development Process
 
 The project follows an agile Kanban workflow using GitHub Projects.
@@ -331,7 +345,7 @@ docs/verification-test.md
 | FastAPI backend | ✅ Completed |
 | React dashboard | ✅ Completed |
 | End-to-end verification | ✅ Completed |
-| CI/CD pipeline | CI Completed |
+| CI pipeline | ✅ Completed |
 
 ---
 
