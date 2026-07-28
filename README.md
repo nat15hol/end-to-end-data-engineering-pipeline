@@ -1,6 +1,8 @@
 # End-to-End Data Engineering Pipeline
 
-![CI](https://github.com/nat15hol/end-to-end-data-engineering-pipeline/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/nat15hol/end-to-end-data-engineering-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/nat15hol/end-to-end-data-engineering-pipeline/actions)
+[![License](https://img.shields.io/github/license/nat15hol/end-to-end-data-engineering-pipeline)](https://github.com/nat15hol/end-to-end-data-engineering-pipeline/blob/main/LICENSE)
+[![Python](https://img.shields.io/badge/python-3.12-blue?logo=python&logoColor=white)](https://www.python.org/)
 
 ## Overview
 
