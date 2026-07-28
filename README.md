@@ -258,7 +258,7 @@ The dashboard supports interaction between the vehicle table and map view.
 
 Selecting a vehicle highlights the corresponding row and updates the map position.
 
-![Dashboard detail view](docs/images/dashboard-detail.png)
+![Dashboard detail view](docs/images/dashboard-detail-v2.png)
 
 ---
 
