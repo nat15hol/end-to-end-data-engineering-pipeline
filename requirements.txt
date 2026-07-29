@@ -4,7 +4,7 @@ protobuf==6.33.6
 gtfs-realtime-bindings==2.1.0
 dbt-postgres==1.11.0
 
-fastapi==0.140.0
+fastapi==0.140.13
 uvicorn==0.51.0
 SQLAlchemy<2.0
 psycopg2-binary==2.9.12
