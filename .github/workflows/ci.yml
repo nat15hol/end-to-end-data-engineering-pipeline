@@ -27,6 +27,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run dependency security audit
+        run: |
+          pip install pip-audit
+          pip-audit
+
       - name: Run tests
         run: |
           pytest
