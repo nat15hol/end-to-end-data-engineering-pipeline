@@ -163,3 +163,18 @@ jobs:
       - name: Run dbt tests
         working-directory: dbt
         run: dbt test
+
+
+  docker:
+    name: Docker verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Build Docker services
+        run: docker compose build
