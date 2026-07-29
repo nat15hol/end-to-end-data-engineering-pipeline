@@ -1,4 +1,4 @@
-requests==2.32.4
+requests==2.33.0
 python-dotenv==1.2.2
 protobuf==6.33.6
 gtfs-realtime-bindings==2.1.0
