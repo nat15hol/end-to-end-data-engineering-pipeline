@@ -32,6 +32,10 @@ models:
       - name: vehicle_id
         tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_vehicle')
+                field: vehicle_id
 
       - name: recorded_at
         tests:
