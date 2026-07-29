@@ -1,6 +1,6 @@
 requests==2.34.2
 python-dotenv==1.2.2
-protobuf==6.33.6
+protobuf==7.35.1
 gtfs-realtime-bindings==2.1.0
 dbt-postgres==1.11.0
 
