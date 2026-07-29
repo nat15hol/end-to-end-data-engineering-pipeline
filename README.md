@@ -180,6 +180,15 @@ This starts:
 | Apache Airflow Webserver | http://localhost:8080 |
 | PostgreSQL Database | localhost:5432 |
 
+### Development credentials
+
+The default Airflow credentials configured in `docker-compose.yml` are intended only for local development and testing.
+
+For production or shared environments:
+- change the default username and password
+- use environment variables or a secrets management solution
+- never store production credentials directly in configuration files
+
 ## 4. Run the FastAPI backend
 
 The FastAPI backend is currently started separately.
