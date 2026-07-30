@@ -8,9 +8,6 @@
 *.pem
 *.key
 
-# Streamlit local secrets
-.streamlit/secrets.toml
-
 # ==========================================
 # 2. Python & Virtual Environments
 # ==========================================
