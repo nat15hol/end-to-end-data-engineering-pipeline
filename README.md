@@ -358,11 +358,13 @@ The dashboard supports interaction between the vehicle table and map view. Selec
 pytest
 ```
 
-The test suite covers ingestion transformation logic and API endpoints.
+The automated test suite covers ingestion transformation logic and API endpoints.
 
 ```text
 5 passed
-``` The database layer is mocked using `monkeypatch`, so these tests run without a live PostgreSQL instance.
+```
+
+The database layer is mocked using `monkeypatch`, so these tests do not require a live PostgreSQL connection.
 
 ## Data Quality Tests
 
