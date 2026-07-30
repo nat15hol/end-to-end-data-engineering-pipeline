@@ -1,5 +1,7 @@
 # Project Plan
 
+> **Note:** This document is no longer actively maintained. Please refer to the README for the current project overview and implementation details.
+
 ## 1. Project Overview
 
 ### Project Name
