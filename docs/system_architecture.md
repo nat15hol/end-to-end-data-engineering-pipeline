@@ -1,5 +1,7 @@
 # System Architecture
 
+> **Note:** This document is no longer actively maintained. Please refer to the README for the current project overview and implementation details.
+
 ## 1. Overview
 
 This document describes the system architecture of the **End-to-End Data Engineering Pipeline** project.
