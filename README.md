@@ -241,7 +241,7 @@ end-to-end-data-engineering-pipeline/
 │   │   ├── staging/
 │   │   └── marts/
 │   ├── dbt_project.yml
-│   └── profiles.yml        # local file only, not committed — see "Getting Started", step 3
+│   └── profiles.yml.example   # template; copy to profiles.yml locally
 │
 ├── frontend/
 │   └── src/
