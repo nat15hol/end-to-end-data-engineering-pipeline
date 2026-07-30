@@ -1,4 +1,4 @@
-# CI/CD Documentation
+# CI Documentation
 
 ## Purpose
 
@@ -164,7 +164,7 @@ The current implementation focuses on Continuous Integration. Continuous Deploym
 
 ## Future Improvements
 
-Possible future CI/CD improvements include:
+Possible future automation improvements include:
 
 ```mermaid
 flowchart TD
@@ -177,9 +177,9 @@ flowchart TD
 Future enhancements could include:
 
 - Database test environment
-- Security scanning
+- Extended security scanning
 - Docker build verification
-- Continuous Deployment workflow
+- Continuous Deployment workflow for production environments
 
 ---
 

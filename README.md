@@ -391,7 +391,7 @@ The GitHub Actions workflow runs on every push and pull request targeting `main`
 - [Verification Test Report](docs/verification-test.md)
 - [System Architecture](docs/system_architecture.md)
 - [Data Model](docs/data_model.md)
-- [CI Documentation](docs/ci-cd.md)
+- [CI Documentation](docs/ci.md)
 
 ---
 
