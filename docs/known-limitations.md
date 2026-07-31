@@ -4,14 +4,7 @@ This document lists known gaps and edge cases in the current implementation. It 
 maintained as a living document — items should be removed once fixed, not left to
 go stale.
 
-Last updated: 2026-07-30
-
-## Data integrity
-
-- **No deduplication on ingestion.** `raw_vehicle_positions` (`src/database/schema.sql`)
-  has no unique constraint beyond the auto-incrementing `id`. If an Airflow task is
-  retried after a partial failure, the same vehicle position can be inserted more than
-  once. A unique constraint on `(vehicle_id, timestamp)` would prevent this.
+Last updated: 2026-07-31
 
 ## Analytics layer materialization
 
@@ -31,21 +24,10 @@ Last updated: 2026-07-30
 
 ## API robustness
 
-- **No error handling around database calls.** `api/queries.py` has no `try/except`
-  around `connection.execute()` calls. A database outage or transient connection issue
-  currently surfaces to the frontend as an unformatted 500 error rather than a
-  controlled response.
 - **No pagination on vehicle history.** `get_vehicle_history` in `api/queries.py`
   returns the full position history for a vehicle in a single response, with no
   `LIMIT` or paging. Vehicles with long history will return increasingly large
   payloads over time.
-
-## Ingestion edge cases
-
-- **`main.py` assumes at least one vehicle is returned.** `src/ingestion/main.py`
-  calls `print(vehicles[0])` unconditionally after extraction. If a poll returns zero
-  vehicles (e.g. during a service gap), this raises an unhandled `IndexError` and the
-  ingestion run fails on what would otherwise be a valid empty result.
 
 ## Testing coverage
 
