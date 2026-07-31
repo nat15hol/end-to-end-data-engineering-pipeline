@@ -25,6 +25,7 @@ def insert_vehicle_positions(vehicles):
             current_status
         )
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        ON CONFLICT (vehicle_id, timestamp) DO NOTHING
     """
 
     values = [
