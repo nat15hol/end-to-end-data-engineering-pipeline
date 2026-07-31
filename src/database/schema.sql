@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS raw_vehicle_positions (
     speed DOUBLE PRECISION,
     timestamp BIGINT,
     current_status INTEGER,
-    ingested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ingested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_vehicle_positions_vehicle_id_timestamp UNIQUE (vehicle_id, timestamp)
 );
