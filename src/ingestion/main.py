@@ -9,6 +9,11 @@ def main():
     vehicles = extract_vehicle_positions(feed)
 
     print(f"Extracted vehicles: {len(vehicles)}")
+
+    if not vehicles:
+        print("No vehicles returned in this poll; skipping insert.")
+        return
+
     print(vehicles[0])
 
     insert_vehicle_positions(vehicles)
