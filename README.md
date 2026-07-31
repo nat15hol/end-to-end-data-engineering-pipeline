@@ -394,6 +394,8 @@ The GitHub Actions workflow runs on every push and pull request targeting `main`
 - [System Architecture](docs/system_architecture.md)
 - [Data Model](docs/data_model.md)
 - [CI Documentation](docs/ci.md)
+- [Known Limitations](docs/known-limitations.md)
+- [Technical Review (2026-07)](docs/reviews/technical-review-2026-07.md)
 
 ---
 
