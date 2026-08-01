@@ -22,7 +22,8 @@ The goal is to demonstrate a complete data workflow where data is collected from
 | API | ✅ Implemented |
 | Dashboard | ✅ Implemented |
 | CI validation | ✅ Implemented |
-| Production deployment (CD) | ⏳ Not implemented |
+| Container image publishing (GHCR) | ✅ Implemented |
+| Cloud deployment | ⏳ Not implemented |
 
 The project covers:
 
@@ -124,7 +125,7 @@ Data quality and software quality are validated through dbt tests and the CI wor
 | Mapping | Leaflet |
 | Version Control | Git & GitHub |
 | Project Management | GitHub Projects |
-| Continuous Integration | GitHub Actions |
+| CI/CD Automation | GitHub Actions |
 
 ---
 
@@ -386,6 +387,44 @@ The GitHub Actions workflow runs on every push and pull request targeting `main`
 
 ---
 
+# Container Image Publishing (CI/CD)
+
+A GitHub Actions workflow automatically builds and publishes the Airflow Docker
+image to GitHub Container Registry (GHCR) when changes are pushed to `main`.
+
+The workflow:
+
+- Builds the Airflow Docker image from `docker/airflow/Dockerfile`
+- Tags the image with both `latest` and the commit SHA
+- Publishes the image to GitHub Container Registry
+
+```text
+Pull Request
+      |
+      v
+Merge to main
+      |
+      v
+GitHub Actions
+      |
+      v
+Docker Build
+      |
+      v
+GitHub Container Registry (GHCR)
+```
+
+The published image is available at:
+
+```text
+ghcr.io/nat15hol/airflow-pipeline
+```
+
+This container image is intended as a deployment artifact for a future cloud
+deployment step (see [Future Improvements](#future-improvements)).
+
+---
+
 # Documentation
 
 - [Project Plan](docs/project_plan.md)
@@ -409,7 +448,7 @@ The GitHub Actions workflow runs on every push and pull request targeting `main`
 - Enhanced data quality checks (freshness checks, anomaly detection)
 - Automated metadata generation
 - Alerting on Airflow task failures
-- Cloud-based production deployment (CD)
+- Cloud deployment of the published GHCR container image (Azure/AWS/other)
 
 ---
 
