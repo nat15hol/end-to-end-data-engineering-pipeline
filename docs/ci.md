@@ -6,7 +6,7 @@ This document describes the Continuous Integration (CI) pipeline implemented for
 
 The purpose of the CI pipeline is to automatically verify code quality, syntax, and buildability on every push and pull request targeting the `main` branch.
 
-The project currently implements Continuous Integration (CI) using GitHub Actions. Continuous Deployment (CD) is not implemented at this stage.
+The project currently implements Continuous Integration (CI) using GitHub Actions. Docker images are automatically built and published to GitHub Container Registry (GHCR) on merge to `main` (see [Container Image Publishing](#container-image-publishing)). Cloud deployment of the published image is not implemented at this stage.
 
 ---
 
@@ -142,7 +142,7 @@ Running these checks locally helps detect issues before they reach the CI pipeli
 
 ## Scope and Limitations
 
-The current implementation focuses on Continuous Integration. Continuous Deployment is intentionally not included because the application currently runs in a local Docker Compose environment.
+The current implementation covers Continuous Integration and container image publishing to GHCR. Cloud deployment is intentionally not included yet because the application currently runs in a local Docker Compose environment.
 
 **Implemented:**
 
@@ -151,14 +151,19 @@ The current implementation focuses on Continuous Integration. Continuous Deploym
 - Frontend linting
 - Frontend production build verification
 - Automated GitHub Actions workflow execution
+- Automated Docker image publishing to GitHub Container Registry (GHCR)
 
 **Not implemented:**
 
-- Automated Docker image publishing
-- Container registry integration
 - Cloud deployment
 - Production environment deployment
 - Automated releases
+
+---
+
+## Container Image Publishing
+
+A separate GitHub Actions workflow (`.github/workflows/publish-ghcr.yml`) builds the Airflow Docker image from `docker/airflow/Dockerfile` and publishes it to GitHub Container Registry on every merge to `main`, tagged with both `latest` and the commit SHA. See the [README](../README.md#container-image-publishing-cicd) for the full workflow diagram and image location.
 
 ---
 
@@ -170,21 +175,19 @@ Possible future automation improvements include:
 flowchart TD
     A[GitHub Actions] --> B[Build Docker Images]
     B --> C[Run Integration Tests]
-    C --> D[Push Images to Container Registry]
-    D --> E[Deploy Application]
+    C --> D[Deploy Application]
 ```
 
 Future enhancements could include:
 
 - Database test environment
 - Extended security scanning
-- Docker build verification
-- Continuous Deployment workflow for production environments
+- Cloud deployment workflow for production environments
 
 ---
 
 ## Conclusion
 
-The Fleet Intelligence project currently has a working Continuous Integration pipeline using GitHub Actions.
+The Fleet Intelligence project currently has a working Continuous Integration pipeline using GitHub Actions, along with automated Docker image publishing to GitHub Container Registry.
 
-The CI workflow automatically verifies that backend and frontend changes can be installed, validated, and built successfully before being merged into the `main` branch. This provides automated quality control and establishes a foundation for future Continuous Deployment improvements.
+The CI workflow automatically verifies that backend and frontend changes can be installed, validated, and built successfully before being merged into the `main` branch. On merge, a Docker image is also built and published to GHCR. This provides automated quality control and a deployment artifact, establishing a foundation for future cloud deployment.

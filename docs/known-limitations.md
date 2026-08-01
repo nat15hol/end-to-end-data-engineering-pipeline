@@ -4,7 +4,7 @@ This document lists known gaps and edge cases in the current implementation. It 
 maintained as a living document — items should be removed once fixed, not left to
 go stale.
 
-Last updated: 2026-07-31
+Last updated: 2026-08-01
 
 ## Analytics layer materialization
 
@@ -39,10 +39,12 @@ Last updated: 2026-07-31
 
 ## Operational maturity
 
-- **No Continuous Deployment.** CI (`.github/workflows/ci.yml`) runs tests, dbt
-  run/test, linting, Docker build validation, and `pip-audit`, but there is no
-  automated deployment pipeline. This is also noted in the README's Project Status
-  table.
+- **No cloud deployment.** CI (`.github/workflows/ci.yml`) runs tests, dbt
+  run/test, linting, and Docker build validation; `pip-audit` scans dependencies;
+  and a separate workflow (`.github/workflows/publish-ghcr.yml`) builds and
+  publishes the Airflow Docker image to GitHub Container Registry on merge to
+  `main`. There is no automated deployment to a cloud environment yet. This is
+  also noted in the README's Project Status table.
 - **No alerting on pipeline failures.** Airflow DAG failures are not currently
   surfaced anywhere outside the Airflow UI.
 
