@@ -44,6 +44,21 @@ The project covers:
 
 # Architecture Overview
 
+```mermaid
+graph TD
+    API[Trafiklab GTFS-RT API] --> Ingestion[Python Data Ingestion]
+    Ingestion --> Raw[(PostgreSQL Raw Layer<br>raw_vehicle_positions)]
+    Raw --> dbt[dbt Transformations]
+    dbt --> Analytics[(Analytical Data Models<br>dim_vehicle, fact_...)]
+    Analytics --> Backend[FastAPI Backend]
+    Backend --> Frontend[React + TypeScript Dashboard]
+
+    Frontend --> Table[Vehicle Monitoring Table]
+    Frontend --> KPI[KPI Overview]
+    Frontend --> Map[Interactive Vehicle Map]
+    Frontend --> History[Vehicle History]
+```
+
 ```text
 Trafiklab GTFS-RT API
         |
