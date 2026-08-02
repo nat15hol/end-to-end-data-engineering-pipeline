@@ -59,50 +59,13 @@ graph TD
     Frontend --> History[Vehicle History]
 ```
 
-```text
-Trafiklab GTFS-RT API
-        |
-        v
-Python Data Ingestion
-        |
-        v
-PostgreSQL Raw Layer
-(raw_vehicle_positions)
-        |
-        v
-dbt Transformations
-        |
-        v
-Analytical Data Models
-(dim_vehicle,
- fact_vehicle_positions,
- fact_vehicle_activity,
- fact_vehicle_latest_position)
-        |
-        v
-FastAPI Backend
-        |
-        v
-React + TypeScript Dashboard
-        |
-        +--> Vehicle Monitoring Table
-        +--> KPI Overview
-        +--> Interactive Vehicle Map
-        +--> Vehicle History
-```
-
 The architecture separates data collection, storage, transformation, serving, and visualization into distinct layers.
 
 The pipeline is orchestrated using Apache Airflow, with the following task sequence:
 
-```text
-run_ingestion
-        |
-        v
-dbt_run
-        |
-        v
-dbt_test
+```mermaid
+graph TD
+    run_ingestion --> dbt_run --> dbt_test
 ```
 
 Schedule:
@@ -413,20 +376,12 @@ The workflow:
 - Tags the image with both `latest` and the commit SHA
 - Publishes the image to GitHub Container Registry
 
-```text
-Pull Request
-      |
-      v
-Merge to main
-      |
-      v
-GitHub Actions
-      |
-      v
-Docker Build
-      |
-      v
-GitHub Container Registry (GHCR)
+```mermaid
+graph TD
+    PR[Pull Request] --> Merge[Merge to main]
+    Merge --> GA[GitHub Actions]
+    GA --> Docker[Docker Build]
+    Docker --> GHCR[GitHub Container Registry GHCR]
 ```
 
 The published image is available at:
