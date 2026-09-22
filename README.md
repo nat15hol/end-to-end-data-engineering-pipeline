@@ -20,6 +20,7 @@
 - [Serving Layer](#serving-layer)
 - [Data Consumer Application](#data-consumer-application)
 - [Dashboard Preview](#dashboard-preview)
+- [Qlik Sense Analysis Layer](#qlik-sense-analysis-layer)
 - [Testing](#testing)
 - [Container Image Publishing (CD)](#container-image-publishing-cd)
 - [Documentation](#documentation)
@@ -384,6 +385,23 @@ This threshold aligns with the pipeline execution frequency.
 The dashboard supports interaction between the vehicle table and map view. Selecting a vehicle highlights the corresponding row and updates the map position.
 
 ![Dashboard detail view](docs/images/dashboard-detail-v2.png)
+
+---
+
+## Qlik Sense Analysis Layer
+
+In addition to the React dashboard, a small Qlik Sense app was built as an aggregated
+analysis/reporting layer on top of the Gold-layer data — KPIs, hourly trend charts, and
+interactive filtering. It's a manual-export prototype rather than a live connection.
+
+![Qlik Sense sheet, unfiltered](docs/images/qlik-sheet-overview.png)
+
+Selecting a value in the filter pane updates the KPIs, table, and both charts, demonstrating
+Qlik's associative model:
+
+![Qlik Sense filter selection](docs/images/qlik-filter-selection.png)
+
+See [`docs/qlik_analysis.md`](docs/qlik_analysis.md) for the data flow, objects, expressions used, and scope decisions.
 
 ---
 
